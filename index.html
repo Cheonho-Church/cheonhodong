@@ -343,7 +343,8 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
 .vbox .cap b{display:block;font-weight:600}
 .vbox .cap span{font-size:.85rem;color:var(--muted)}
 .vbox .cap p{font-size:.9rem;color:var(--muted);margin-top:6px}
-.vfoot{padding:56px 0 72px}
+.vfoot{padding:56px 0 72px;display:flex;flex-wrap:wrap;gap:12px}
+.vfoot a[hidden]{display:none}
 </style>
 </head>
 <body>
@@ -544,7 +545,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
     </div>
   </div>
   <div class="wrap" id="videoList"></div>
-  <div class="wrap vfoot"><a class="btn ghost" href="#media">← 뒤로가기</a></div>
+  <div class="wrap vfoot"><a class="btn ghost" href="#media">← 뒤로가기</a><a class="btn ghost" id="vChLink" href="#" target="_blank" rel="noopener" hidden>천호동교회 유튜브 ↗</a></div>
 </div>
 
 <footer>
@@ -720,7 +721,7 @@ if (dawn.length) {
   if (v) { col.append(thumb(v), make('span', 'cap', v.title)); } else col.append(make('div', 'none'));
   $('rowKids').append(col);
 });
-if (CHANNEL) { const a = $('chLink'); a.href = CHANNEL; a.hidden = false; }
+if (CHANNEL) { ['chLink','vChLink'].forEach(id=>{ const a=$(id); a.href = CHANNEL; a.hidden = false; }); }
 
 function renderVideos(filter) {
   $('tabs').innerHTML = '';
