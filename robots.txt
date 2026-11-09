@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://cheonho-church.github.io/cheonhodong/sitemap.xml
