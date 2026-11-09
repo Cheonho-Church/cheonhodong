@@ -119,6 +119,7 @@ h1,h2,h3,p,ol,ul,dl,dd,figure{margin:0}
 /* ---------- greeting ---------- */
 .greet{background:var(--paper);border-bottom:1px solid var(--hair)}
 .g-lead{font-family:var(--display);font-weight:300;font-size:clamp(1.45rem,3.6vw,2.15rem);line-height:1.6;letter-spacing:-.02em;max-width:24em;margin-top:18px;text-wrap:pretty}
+.g-lead .nw{white-space:nowrap}
 .g-body{display:grid;gap:14px;max-width:36em;margin-top:26px;color:var(--muted)}
 @media (min-width:860px){.g-body{grid-template-columns:1fr 1fr;gap:36px;max-width:none}}
 .g-sign{margin-top:30px;font-family:var(--display);font-size:1.2rem;font-weight:400}
@@ -393,7 +394,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
   <section class="sec greet" id="greet">
     <div class="wrap">
       <p class="label">담임목사 인사</p>
-      <p class="g-lead">반갑습니다.<br>우리는 예수님이 선포하고 보여 주신 십자가 사랑을 신앙의 출발점이자 목적지로 삼습니다.</p>
+      <p class="g-lead">반갑습니다.<br>우리는 예수님이 선포하고 <span class="nw">보여 주신 십자가 사랑을</span><br><span class="nw">신앙의 출발점이자 목적지로</span> 삼습니다.</p>
       <div class="g-body">
         <p>분노와 욕망, 깨어진 자존감, 자기중심성이라는 견고한 성 안에서 외로워진 마음이 회복되고, 일터와 가정의 평범한 하루가 하나님 나라의 다스림 안에 있기를 꿈꿉니다.</p>
         <p>예배로 그 나라를 누리고, 양육으로 배우고, 말씀과 기도로 살아내며, 당신이 살아가는 그곳이 하나님 나라의 입구가 되기를 기도합니다.</p>
