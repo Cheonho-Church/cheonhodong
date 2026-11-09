@@ -170,6 +170,13 @@ h1,h2,h3,p,ol,ul,dl,dd,figure{margin:0}
 .sermon .season{font-size:.88rem;color:var(--muted)}
 .sermon h3{font-family:var(--display);font-weight:400;font-size:clamp(1.45rem,3.8vw,1.95rem);line-height:1.45;letter-spacing:-.02em;margin-top:8px;white-space:pre-line}
 .sermon .ref{margin-top:10px;color:var(--muted);font-size:.95rem}
+.wk-watch{display:flex;flex-wrap:wrap;gap:8px 10px;margin-top:18px}
+.wk-watch[hidden]{display:none}
+.wk-watch a{display:inline-flex;align-items:center;gap:8px;min-height:44px;padding:0 16px 0 12px;border:1px solid rgba(70,58,36,.28);border-radius:999px;color:var(--ink);text-decoration:none;font-size:.9rem;transition:background .2s,border-color .2s}
+.wk-watch a:hover,.wk-watch a:focus-visible{background:rgba(255,255,255,.45);border-color:rgba(70,58,36,.5)}
+.wk-watch svg{width:20px;height:20px;flex:none}
+.wk-watch small{color:var(--muted);font-size:.8rem}
+
 .cal{list-style:none;padding:0;border-top:1px solid var(--hair)}
 .cal li{display:grid;grid-template-columns:5.6em 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);font-size:.95rem;font-variant-numeric:tabular-nums}
 .cal b{font-weight:600;color:var(--olive)}
@@ -466,6 +473,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
           <p class="season" id="wkSeason"></p>
           <h3 id="wkTitle"></h3>
           <p class="ref" id="wkRef"></p>
+          <div class="wk-watch" id="wkWatch" hidden></div>
         </div>
         <div>
           <ul class="cal" id="wkCal"></ul>
@@ -783,6 +791,28 @@ if(document.fonts){document.fonts.addEventListener('loadingdone',alignSub);
   ['600 16px "BrandKR"','400 16px "BrandKR"','600 16px "IBM Plex Sans KR"','400 16px "Hahmlet"','400 16px "IBM Plex Sans KR"'].forEach(f=>document.fonts.load(f,'천호동교회한국기독장로').then(alignSub).catch(()=>{}));}
 addEventListener('load',()=>{alignSub();setTimeout(alignSub,800);setTimeout(alignSub,2000)});
 addEventListener('resize',()=>{clearTimeout(window.__as);window.__as=setTimeout(alignSub,150)});
+
+/* 이번 주 설교 → 같은 날짜의 영상(주일 말씀 쇼츠 · 어린이 동화 주일편)으로 바로 가기 */
+(function(){
+  const m = WEEK.date.match(/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/); if(!m) return;
+  const iso = `${m[1]}-${m[2].padStart(2,'0')}-${m[3].padStart(2,'0')}`;
+  const pick = (f)=>VIDEOS.find(v=>v.date===iso && v.url && f(v));
+  const items = [
+    [pick(v=>v.cat==='sunday'), '1분 말씀 영상', '쇼츠'],
+    [pick(v=>v.cat==='kids' && v.track==='sunday'), '어린이 성경 동화', v=>v.title],
+  ].filter(x=>x[0]);
+  if(!items.length) return;
+  const box=$('wkWatch');
+  items.forEach(([v,label,sub])=>{
+    const a=make('a'); a.href=v.url; a.target='_blank'; a.rel='noopener';
+    a.setAttribute('aria-label', `${label} 보기 (유튜브, 새 창)`);
+    a.innerHTML='<svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="9.25" fill="none" stroke="currentColor" stroke-opacity=".45"/><path d="M8.2 6.6v6.8l5.4-3.4z" fill="currentColor"/></svg>';
+    const t=make('span'); t.textContent=label; a.append(t);
+    const sm=make('small'); sm.textContent= typeof sub==='function'? sub(v): sub; a.append(sm);
+    box.append(a);
+  });
+  box.hidden=false;
+})();
 </script>
 </body>
 </html>
