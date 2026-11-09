@@ -665,13 +665,15 @@ const CHANNEL = 'https://www.youtube.com/@%EC%B2%9C%ED%98%B8%EB%8F%99%EA%B5%90%E
 const VIDEOS = [
   {cat:'dawn',   date:'2026-11-10', title:'[새벽 묵상] 여호와의 얼굴을 구하라 (사 8:15-22)ㅣ이사야 1분 숏츠 #22 (26.11.10)', ref:'이사야 8:16–22', thumb:'shorts-20261110', url:'https://www.youtube.com/watch?v=rRQDpUDRyKo'},
   {cat:'kids', track:'dawn',   date:'2026-11-10', title:'[새벽 묵상] 이사야와 가려진 해 (사 8:16-22)ㅣ어린이 성경 동화- 이사야 편 22화 (26.11.10)', ref:'이사야 8:16–22', thumb:'hidden-sun-kids', url:'https://www.youtube.com/watch?v=3JzQJ1YEqOY'},
-  {cat:'sunday', date:'2026-11-01', title:'감사가 사라지면, 꿀 섞은 과자도 퍽퍽해진다', ref:'출애굽기 16:13–15, 31 · 민수기 9:15–23 · 11:1–9', thumb:'shorts-20261101', url:'https://www.youtube.com/watch?v=Jh5kD8-8Iek'},
-  {cat:'kids', track:'sunday', date:'2026-11-01', title:'꿀맛 만나가 퍽퍽해졌어요', ref:'출애굽기 16장 · 민수기 11장', thumb:'manna-kids', url:'https://www.youtube.com/watch?v=7rYsLmeCpZ4'},
+  {cat:'sunday', date:'2026-11-01', title:'[주일 예배] 감사가 사라지면 꿀 섞은 과자도 퍽퍽해진다 (출 16:13-15)ㅣ주일 설교 1분 숏츠 (26.11.01)', ref:'출애굽기 16:13–15, 31 · 민수기 9:15–23 · 11:1–9', thumb:'shorts-20261101', url:'https://www.youtube.com/watch?v=Jh5kD8-8Iek'},
+  {cat:'kids', track:'sunday', date:'2026-11-01', title:'[주일 예배] 꿀맛 만나가 퍽퍽해졌어요 (출 16:13-15)ㅣ어린이 성경 동화 주일편 - 감사 시리즈 1 (26.11.01)', ref:'출애굽기 16:13–15', thumb:'manna-kids', url:'https://www.youtube.com/watch?v=7rYsLmeCpZ4'},
   {cat:'sunday', date:'2026-11-08', title:'[주일 예배] 은혜를 잊으면 (역대하 32:24-31)ㅣ주일 설교 1분 숏츠 (26.11.08)', ref:'역대하 32:24–31', thumb:'shorts-20261108', url:'https://www.youtube.com/watch?v=Xy3n5kZ3Ijk'},
-  {cat:'dawn',   date:'2026-11-06', title:'실로아 물과 낮아짐의 십자가', ref:'이사야 8:1–15', thumb:'shorts-20261106', url:'https://www.youtube.com/watch?v=_F_ybJcMf6g'},
+  {cat:'dawn',   date:'2026-11-06', title:'[새벽 묵상] 여호와의 얼굴을 구하라 (사 8:1-15)ㅣ이사야 1분 숏츠 #21 (26.11.6)', ref:'이사야 8:1–15', thumb:'shorts-20261106', url:'https://www.youtube.com/watch?v=_F_ybJcMf6g'},
   {cat:'kids', track:'sunday', date:'2026-11-08', title:'[주일 예배] 히스기야 왕의 창고 (대하 32:24-31)ㅣ어린이 성경 동화 주일편 - 감사 시리즈 2 (26.11.08)', ref:'역대하 32:24–31', thumb:'hezekiah-kids', url:'https://www.youtube.com/watch?v=2gl6e0Bjps8'},
-  {cat:'kids', track:'dawn',   date:'2026-11-06', title:'이사야와 작은 시냇물', ref:'이사야 8:1–15', thumb:'isaiah8-kids', url:'https://www.youtube.com/watch?v=FDmNA28IkSw'},
+  {cat:'kids', track:'dawn',   date:'2026-11-06', title:'[새벽 묵상] 이사야와 작은 시냇물 (사 8:1-14)ㅣ어린이 성경 동화 - 이사야 편 21화 (26.11.06)', ref:'이사야 8:1–14', thumb:'isaiah8-kids', url:'https://www.youtube.com/watch?v=FDmNA28IkSw'},
 ];
+/* 홈 화면용 짧은 제목: [분류]·(본문)·ㅣ뒤 설명을 뺀 이름. '영상 모두 보기'에는 전체 제목 */
+const shortTitle = t => t.replace(/^\[[^\]]*\]\s*/, '').split('ㅣ')[0].replace(/\s*\([^)]*\)\s*$/, '').trim() || t;
 const CATS = {sunday:'주일 말씀', dawn:'새벽 말씀', kids:'어린이 성경 동화'};
 const DAYS = ['일','월','화','수','목','금','토'];
 const md = d => { const [y,m,dd] = d.split('-').map(Number); return `${m}. ${dd}.`; };
@@ -718,7 +720,7 @@ if (dawn.length) {
 [['sunday', '주일편'], ['dawn', '새벽편']].forEach(([tr, name]) => {
   const col = make('div', 'kcol'); col.append(make('span', 'kt ' + (tr === 'sunday' ? 'sun' : 'dawn'), name));
   const v = VIDEOS.find(x => x.cat === 'kids' && x.track === tr);
-  if (v) { col.append(thumb(v), make('span', 'cap', v.title)); } else col.append(make('div', 'none'));
+  if (v) { col.append(thumb(v), make('span', 'cap', shortTitle(v.title))); } else col.append(make('div', 'none'));
   $('rowKids').append(col);
 });
 if (CHANNEL) { ['chLink','vChLink'].forEach(id=>{ const a=$(id); a.href = CHANNEL; a.hidden = false; }); }
