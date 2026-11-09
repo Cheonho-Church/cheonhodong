@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>천호동교회 홈페이지</title>
+<meta name="description" content="하나님 나라, 사랑 이야기를 써 가는 교회. 주일 오전 11시, 청량리 예배당에서 함께 예배해요.">
+<link rel="icon" href="images/prok-logo.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Hahmlet:wght@300;400;600&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+/* Layout: 새벽 하늘 히어로(큰 글씨 + 천호동→청량리→다시 천호동을 잇는 가는 길 하나) → 빈 의자 사진 "당신의 자리" → 처음 오시는 분께(번호 목록)
+   → 주일에 만나요(시간·장소) → 이번 주 → 우리 이야기(같은 길) → 영상 → 새벽색 바닥글(연락·헌금).
+   대담함은 히어로의 글씨와 길 한 곳에만. 나머지는 여백과 가는 선으로 조용히. 카드 남발 없음. */
+:root{
+  --ivory:#f6f3ec;
+  --paper:#fbf9f4;
+  --ink:#24272b;
+  --muted:#6f6e68;
+  --hair:#e3ddd0;
+  --dawn-1:#1f3349;
+  --dawn-2:#3c5a78;
+  --dawn-3:#8aa6bf;
+  --dawn:#4f7092;
+  --dawn-soft:#e4ebf1;
+  --olive:#68764b;
+  --sand:#eadfcb;
+  --mist:#e6ecf1;
+  --on-dark:#f4efe4;
+  --on-dark-muted:#b9c7d4;
+  --display:"Hahmlet","Nanum Myeongjo",serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --ivory:#141619; --paper:#1b1e22; --ink:#ece7dc; --muted:#a19e95; --hair:#2d3036;
+    --dawn:#9db8d0; --dawn-soft:#22303c; --olive:#b3bf8e; --sand:#2e2a22; --mist:#18212a; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --ivory:#141619; --paper:#1b1e22; --ink:#ece7dc; --muted:#a19e95; --hair:#2d3036;
+  --dawn:#9db8d0; --dawn-soft:#22303c; --olive:#b3bf8e; --sand:#2e2a22; --mist:#18212a; color-scheme:dark;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto}}
+body{margin:0;background:var(--ivory);color:var(--ink);font-family:var(--body);font-size:16.5px;line-height:1.75;word-break:keep-all}
+/* 스크롤 중 글자 아래가 잠깐 하얗게 비치는 현상 방지: 색 있는 구역은 배경과 글자를 한 층에 그린다 */
+.hero,.seat,.greet,.sunday,.week,.story,.media,footer,.vhead{position:relative;isolation:isolate;transform:translateZ(0);backface-visibility:hidden}
+a{color:inherit}
+a:focus-visible,button:focus-visible,summary:focus-visible{outline:2px solid var(--dawn);outline-offset:4px;border-radius:6px}
+h1,h2,h3,p,ol,ul,dl,dd,figure{margin:0}
+.wrap{max-width:1040px;margin:0 auto;padding:0 24px}
+.label{font-size:.78rem;font-weight:600;letter-spacing:.14em;color:var(--olive)}
+.h2{font-family:var(--display);font-weight:400;font-size:clamp(1.75rem,4.6vw,2.6rem);line-height:1.35;letter-spacing:-.02em;margin-top:10px;text-wrap:balance}
+.lede{color:var(--muted);max-width:32em;margin-top:14px}
+.sec{padding:88px 0}
+@media (max-width:640px){.sec{padding:64px 0}}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:48px;padding:0 22px;border-radius:999px;font:inherit;font-weight:500;font-size:.95rem;text-decoration:none;border:1px solid transparent;cursor:pointer;transition:background .2s,color .2s,border-color .2s}
+.btn.solid{background:var(--ink);color:var(--ivory)}
+.btn.solid:hover{background:var(--dawn-2);color:#fff}
+.btn.ghost{border-color:var(--hair);color:var(--ink);background:transparent}
+.btn.ghost:hover{border-color:var(--ink)}
+.arrow{transition:transform .2s}
+.btn:hover .arrow,.tile:hover .arrow{transform:translateX(3px)}
+
+/* ---------- hero: dawn sky ---------- */
+.hero{position:relative;color:var(--on-dark);background:linear-gradient(180deg,var(--dawn-1) 0%,var(--dawn-2) 62%,#6a88a7 100%);overflow:hidden}
+.topbar{display:flex;justify-content:space-between;align-items:center;padding:22px 0}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none}
+.brand > span{display:inline-flex;flex-direction:column}
+.brand b{font-weight:600;font-size:1rem;letter-spacing:.01em;line-height:1.25}
+.brand small{display:flex;justify-content:space-between;font-size:.72rem;line-height:1.3;color:var(--on-dark-muted);margin-top:1px;white-space:nowrap}
+.toplink{font-size:.9rem;color:var(--on-dark-muted);text-decoration:none;min-height:44px;display:inline-flex;align-items:center}
+.toplink:hover{color:var(--on-dark)}
+.hero-copy{padding:72px 0 28px}
+.hero .eyebrow{font-size:.8rem;letter-spacing:.16em;color:var(--on-dark-muted)}
+.hero h1{font-family:var(--display);font-weight:300;font-size:clamp(2.6rem,9vw,5.6rem);line-height:1.18;letter-spacing:-.035em;margin-top:18px;text-wrap:balance}
+.hero h1 b{font-weight:600}
+.hero .when{margin-top:28px;font-size:1.02rem;color:var(--on-dark)}
+.hero .when span{color:var(--on-dark-muted)}
+.hero .cta{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px}
+.hero .btn.solid{background:var(--on-dark);color:var(--dawn-1)}
+.hero .btn.solid:hover{background:#fff}
+.hero .btn.ghost{border-color:rgba(244,239,228,.45);color:var(--on-dark)}
+.hero .btn.ghost:hover{border-color:var(--on-dark)}
+.route{display:block;width:100%;height:auto;margin-top:40px;margin-bottom:-4px}
+.route .line{fill:none;stroke:#f4efe4;stroke-width:1.8;stroke-linecap:round}
+.route .l-short{stroke-width:1.5;stroke-opacity:.9}
+.route .dash{fill:none;stroke:#f4efe4;stroke-opacity:.8;stroke-width:2.2;stroke-dasharray:1 8;stroke-linecap:round}
+.route .dot{fill:#f4efe4}
+.route .dot.end{fill:none;stroke:#f4efe4;stroke-width:1.6}
+.route text{font-family:var(--body);font-size:15px;fill:#dfe7ee}
+.route text.dk{fill:#f4efe4}
+.route .yr{font-family:var(--display);font-size:22px;font-weight:600;fill:#f4efe4}
+.route.narrow{display:none}
+@media (max-width:700px){.route.wide{display:none}.route.narrow{display:block;margin-top:28px}.route.narrow text{font-size:13px}.route.narrow .yr{font-size:16px}}
+@media (prefers-reduced-motion: no-preference){
+  .route .line{stroke-dasharray:1;stroke-dashoffset:1;animation:draw 2s .3s cubic-bezier(.45,0,.25,1) forwards}
+  .route .l-short{animation:draw 1.3s 1s cubic-bezier(.45,0,.25,1) forwards}
+  .route .d-short,.route .t-short{opacity:0;animation:fade .6s .9s ease forwards}
+  .route .late{opacity:0;animation:fade .9s 2.2s ease forwards}
+  .hero-copy > *{animation:up .9s cubic-bezier(.2,.7,.2,1) both}
+  .hero-copy > :nth-child(2){animation-delay:.08s}.hero-copy > :nth-child(3){animation-delay:.16s}.hero-copy > :nth-child(4){animation-delay:.24s}
+}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes fade{to{opacity:1}}
+@keyframes up{from{opacity:.25;transform:translateY(14px)}to{opacity:1;transform:none}}
+
+/* ---------- seat photo ---------- */
+.seat{position:relative;background:#2a241d}
+.seat img{display:block;width:100%;height:auto;max-height:58vh;object-fit:cover;object-position:center 60%}
+.seat figcaption{position:absolute;left:0;right:0;bottom:0;padding:90px 0 30px;background:linear-gradient(180deg,rgba(30,24,18,0),rgba(30,24,18,.72));color:#f6efe2}
+.seat figcaption p:first-child{font-family:var(--display);font-weight:400;font-size:clamp(1.5rem,4.4vw,2.4rem);letter-spacing:-.02em}
+.seat figcaption p:last-child{font-size:.95rem;opacity:.85;margin-top:4px}
+
+/* ---------- greeting ---------- */
+.greet{background:var(--paper);border-bottom:1px solid var(--hair)}
+.g-lead{font-family:var(--display);font-weight:300;font-size:clamp(1.45rem,3.6vw,2.15rem);line-height:1.6;letter-spacing:-.02em;max-width:24em;margin-top:18px;text-wrap:pretty}
+.g-body{display:grid;gap:14px;max-width:36em;margin-top:26px;color:var(--muted)}
+@media (min-width:860px){.g-body{grid-template-columns:1fr 1fr;gap:36px;max-width:none}}
+.g-sign{margin-top:30px;font-family:var(--display);font-size:1.2rem;font-weight:400}
+.g-sign span{font-family:var(--body);font-size:.85rem;color:var(--muted);margin-right:8px}
+
+
+/* ---------- first visit ---------- */
+.firsts{list-style:none;padding:0;margin-top:44px;display:grid;grid-template-columns:1fr;border-top:1px solid var(--hair)}
+@media (min-width:760px){.firsts{grid-template-columns:1fr 1fr;column-gap:56px}}
+.firsts li{display:grid;grid-template-columns:52px 1fr;gap:4px 12px;padding:26px 0;border-bottom:1px solid var(--hair)}
+.firsts .n{font-family:var(--display);font-weight:300;font-size:1.6rem;line-height:1.2;color:var(--dawn);font-variant-numeric:tabular-nums}
+.firsts h3{font-size:1.06rem;font-weight:600;letter-spacing:-.01em}
+.firsts p{grid-column:2;color:var(--muted);font-size:.96rem}
+.steps{grid-column:2;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:10px;font-size:.86rem;color:var(--ink)}
+.steps i{font-style:normal;color:var(--hair)}
+
+/* ---------- sunday ---------- */
+.sunday{background:var(--paper);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
+.sun-grid{display:grid;gap:40px;margin-top:40px}
+@media (min-width:860px){.sun-grid{grid-template-columns:1.1fr 1fr;gap:72px}}
+.clock{font-family:var(--display);font-weight:300;font-size:clamp(4.4rem,13vw,7.5rem);line-height:.95;letter-spacing:-.05em;font-variant-numeric:tabular-nums;color:var(--ink)}
+.clock-sub{margin-top:14px;font-size:1.05rem}
+.clock-sub span{display:block;color:var(--muted);font-size:.95rem}
+.place{font-family:var(--display);font-size:1.35rem;font-weight:400;line-height:1.5;letter-spacing:-.01em}
+.place-sub{color:var(--muted);margin-top:4px}
+.btnrow{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+.times{list-style:none;padding:0;margin-top:36px;border-top:1px solid var(--hair)}
+.times li{display:flex;justify-content:space-between;gap:16px;padding:13px 0;border-bottom:1px solid var(--hair);font-size:.95rem;font-variant-numeric:tabular-nums}
+.times li span:last-child{color:var(--muted);text-align:right}
+
+/* ---------- this week ---------- */
+.week{background:var(--sand);--hair:rgba(70,58,36,.16)}
+.week-head{display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap}
+.stamp{font-size:.85rem;color:var(--muted);font-variant-numeric:tabular-nums}
+.week-grid{display:grid;gap:36px;margin-top:36px}
+@media (min-width:860px){.week-grid{grid-template-columns:1.1fr 1fr;gap:72px}}
+.sermon .season{font-size:.88rem;color:var(--muted)}
+.sermon h3{font-family:var(--display);font-weight:400;font-size:clamp(1.45rem,3.8vw,1.95rem);line-height:1.45;letter-spacing:-.02em;margin-top:8px;white-space:pre-line}
+.sermon .ref{margin-top:10px;color:var(--muted);font-size:.95rem}
+.cal{list-style:none;padding:0;border-top:1px solid var(--hair)}
+.cal li{display:grid;grid-template-columns:5.6em 1fr;gap:12px;padding:12px 0;border-bottom:1px solid var(--hair);font-size:.95rem;font-variant-numeric:tabular-nums}
+.cal b{font-weight:600;color:var(--olive)}
+details.news{margin-top:18px}
+details.news summary{cursor:pointer;list-style:none;display:inline-flex;align-items:center;gap:8px;min-height:44px;font-weight:500;color:var(--dawn)}
+details.news summary::-webkit-details-marker{display:none}
+details.news summary::after{content:"+";font-size:1.1rem;line-height:1}
+details.news[open] summary::after{content:"–"}
+details.news ol{padding-left:1.25em;display:grid;gap:10px;margin-top:6px;color:var(--ink);font-size:.95rem}
+details.news li::marker{color:var(--olive);font-weight:600}
+
+/* ---------- story ---------- */
+.story{background:var(--ivory)}
+.journey{list-style:none;padding:0;margin-top:48px;position:relative}
+.journey::before{content:"";position:absolute;left:7px;top:10px;bottom:10px;width:0;border-left:1.6px solid var(--ink);opacity:.55}
+.journey li{position:relative;padding:0 0 36px 44px}
+.journey li:last-child{padding-bottom:0}
+.journey li::before{content:"";position:absolute;left:0;top:8px;width:16px;height:16px;border-radius:50%;background:var(--ink)}
+.journey li.next::before{background:var(--ivory);border:1.6px solid var(--ink)}
+.journey li.next::after{content:"";position:absolute;left:7px;top:-36px;height:44px;border-left:1.6px dashed var(--ivory)}
+.journey .yr{font-family:var(--display);font-weight:600;font-size:1.5rem;letter-spacing:-.02em;font-variant-numeric:tabular-nums}
+.journey h3{font-size:1.05rem;font-weight:600;margin-top:2px}
+.journey p{color:var(--muted);max-width:34em;margin-top:4px}
+.motto{margin-top:56px;padding-top:28px;border-top:1px solid rgba(36,39,43,.18);font-family:var(--display);font-weight:300;font-size:clamp(1.3rem,3.6vw,1.8rem);letter-spacing:-.02em}
+.motto small{display:block;font-family:var(--body);font-size:.82rem;color:var(--muted);margin-top:6px;letter-spacing:0}
+
+/* ---------- media ---------- */
+.tiles{display:grid;gap:16px;margin-top:40px}
+@media (min-width:760px){.tiles{grid-template-columns:1fr 1fr}}
+.tile{display:grid;grid-template-columns:112px 1fr;gap:20px;align-items:center;text-decoration:none;padding:16px;border-radius:20px;background:var(--paper);border:1px solid var(--hair);transition:border-color .2s}
+.tile:hover{border-color:var(--ink)}
+.tile img{width:112px;height:112px;border-radius:14px;object-fit:cover;display:block;background:var(--dawn-soft)}
+.tile b{display:block;font-size:1.1rem;font-weight:600;letter-spacing:-.01em}
+.tile span{display:block;font-size:.88rem;color:var(--muted);margin-top:2px}
+.tile em{font-style:normal;display:inline-flex;gap:6px;margin-top:8px;font-size:.88rem;color:var(--dawn)}
+
+
+/* ---------- media (emphasis) ---------- */
+.media{background:linear-gradient(180deg,var(--dawn-1),#26405a);color:var(--on-dark)}
+.media .label{color:#c9d8a8}
+.media .lede{color:var(--on-dark-muted)}
+.mrows{margin-top:36px}
+.mrow{display:grid;grid-template-columns:1fr;gap:12px;padding:22px 0;border-top:1px solid rgba(244,239,228,.14)}
+@media (min-width:760px){.mrow{grid-template-columns:130px 1fr;gap:28px;align-items:start}}
+.mlabel b{display:block;font-family:var(--display);font-weight:600;font-size:1.35rem;letter-spacing:-.01em}
+.mlabel span{font-size:.82rem;color:var(--on-dark-muted)}
+@media (max-width:759px){.mlabel{display:flex;align-items:baseline;gap:10px}.mlabel b{font-size:1.2rem}}
+.mlist{display:flex;gap:12px;overflow-x:auto;padding-bottom:4px;scroll-snap-type:x mandatory}
+.mlist > *{flex:0 0 calc((100% - 36px) / 4);scroll-snap-align:start}
+@media (min-width:760px){.mlist > *{flex-basis:120px}}
+.mlist .vthumb{aspect-ratio:9/16;border-radius:12px}
+.slot{aspect-ratio:9/16;border-radius:12px;border:1px dashed rgba(244,239,228,.28);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--on-dark-muted);font-size:.85rem;font-variant-numeric:tabular-nums}
+.slot b{font-family:var(--display);font-weight:600;font-size:1.25rem;color:rgba(244,239,228,.55)}
+.kgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media (min-width:760px){.kgrid{grid-template-columns:repeat(2,minmax(0,240px));gap:20px}}
+.kcol .kt{display:block;font-size:.8rem;font-weight:600;margin-bottom:8px}
+.kcol .kt.sun{color:#e3d3b0}.kcol .kt.dawn{color:#b9cfe3}
+.kcol .vthumb{aspect-ratio:16/9;border-radius:12px}
+.kcol .cap{display:block;margin-top:8px;font-size:.88rem;line-height:1.4}
+.kcol .none{aspect-ratio:16/9;border-radius:12px;border:1px dashed rgba(244,239,228,.28)}
+.vthumb{position:relative;display:block;border-radius:16px;overflow:hidden;background:#162636;text-decoration:none}
+.vthumb img{display:block;width:100%;height:100%;object-fit:cover}
+.vthumb .play{position:absolute;right:10px;bottom:10px;width:32px;height:32px;border-radius:50%;background:rgba(244,239,228,.92);display:grid;place-items:center}
+.vthumb .play svg{width:13px;height:13px;fill:var(--dawn-1);margin-left:2px}
+.item{text-decoration:none;color:inherit}
+.item .d{display:block;margin-top:12px;font-size:.8rem;color:#c9d8a8;font-variant-numeric:tabular-nums}
+.item .t{display:block;margin-top:2px;font-size:.93rem;font-weight:500;line-height:1.45}
+.m-links{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:36px;padding-top:20px;border-top:1px solid rgba(244,239,228,.16)}
+.m-links a{color:var(--on-dark);text-decoration:none;min-height:44px;display:inline-flex;align-items:center;gap:6px;font-size:.95rem}
+.m-links a:hover .arrow{transform:translateX(3px)}
+.kbadge{position:absolute;left:10px;top:10px;font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:999px}
+.kbadge.sun{background:#eadfcb;color:#4e5a33}
+.kbadge.dawn{background:#dbe5ee;color:#2f4a63}
+/* archive (light) */
+.archive .item .d,.archive .item .t{color:var(--ink)}
+.archive .item .d{color:var(--muted)}
+.agrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}
+@media (min-width:760px){.agrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.agrid .vthumb{aspect-ratio:9/16}
+.agrid.wide{grid-template-columns:1fr}
+@media (min-width:760px){.agrid.wide{grid-template-columns:1fr 1fr}}
+.agrid.wide .vthumb{aspect-ratio:16/9}
+
+/* 교회 이름·교단명 전용 글꼴(내장): 기기마다 모양이 달라 줄이 어긋나지 않도록 */
+@font-face{font-family:"BrandKR";font-weight:100 499;src:url(data:font/woff;base64,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) format("woff")}
+@font-face{font-family:"BrandKR";font-weight:500 900;src:url(data:font/woff;base64,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) format("woff")}
+.brand b,.brand small,.fname h2,.foot .fname h2,.fname small{font-family:"BrandKR",var(--body)}
+/* ---------- footer ---------- */
+footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
+.foot{display:grid;gap:40px}
+@media (min-width:860px){.foot{grid-template-columns:1.2fr 1fr 1fr}}
+.foot h2{font-family:var(--display);font-weight:400;font-size:1.6rem;letter-spacing:-.02em;line-height:1.2}
+.fbrand{display:flex;align-items:center;gap:14px}
+.fbrand > img{margin-top:2px}
+.fname{display:inline-flex;flex-direction:column}
+.fname small{display:flex;justify-content:space-between;font-size:.8rem;line-height:1.3;color:var(--on-dark-muted);margin-top:2px;white-space:nowrap}
+.ftimes{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin-top:26px;margin-left:58px;font-size:.9rem;font-variant-numeric:tabular-nums}
+.ftimes dt{color:var(--on-dark-muted)}
+.serve-btn{font:inherit;font-size:.85rem;color:var(--on-dark-muted);background:none;border:none;padding:0;cursor:pointer;display:inline-flex;align-items:center;gap:6px;text-align:left}
+.serve-btn:hover{color:var(--on-dark)}
+.serve-list{list-style:none;margin:18px 0 0 58px;padding:14px 0 0;border-top:1px solid rgba(244,239,228,.14);display:grid;gap:6px;font-size:.88rem;color:var(--on-dark)}
+.serve-list[hidden]{display:none}
+.serve-list li{display:grid;grid-template-columns:4.4em 1fr;gap:4px}
+.serve-list span{color:var(--on-dark-muted)}
+.fsep{width:1px;height:34px;background:rgba(244,239,228,.25);flex:none;align-self:center}
+.fpastor{align-self:stretch;display:flex;flex-direction:column;justify-content:space-between;padding:3px 0 2px;font-size:.9rem}
+.fpastor > p{color:var(--on-dark)}
+.foot .sub{color:var(--on-dark-muted);font-size:.9rem;margin-top:6px}
+.foot dl{display:grid;grid-template-columns:auto 1fr;gap:8px 18px;font-size:.93rem;font-variant-numeric:tabular-nums}
+.foot dt{color:var(--on-dark-muted)}
+.foot .acc{font-size:1.05rem;font-weight:500;font-variant-numeric:tabular-nums;margin-top:6px}
+.copy{margin-top:12px;font:inherit;font-size:.86rem;color:var(--on-dark);background:transparent;border:1px solid rgba(244,239,228,.4);border-radius:999px;padding:0 16px;min-height:40px;cursor:pointer}
+.copy:hover{border-color:var(--on-dark)}
+#msg{display:block;min-height:1.4em;font-size:.82rem;color:var(--on-dark-muted);margin-top:6px}
+.legal{margin-top:56px;padding-top:22px;border-top:1px solid rgba(244,239,228,.14);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:.8rem;color:var(--on-dark-muted)}
+
+/* ---------- views & videos ---------- */
+.view{display:none}.view.on{display:block}
+.vhead{background:linear-gradient(180deg,var(--dawn-1),var(--dawn-2));color:var(--on-dark)}
+.vhead h1{font-family:var(--display);font-weight:300;font-size:clamp(2.2rem,7vw,3.4rem);letter-spacing:-.03em;margin-top:24px}
+.vhead p{color:var(--on-dark-muted);margin-top:6px}
+.tabs{display:flex;gap:8px;overflow-x:auto;padding:28px 0 24px}
+.tabs a{flex:none;text-decoration:none;font-size:.9rem;padding:0 18px;min-height:42px;display:inline-flex;align-items:center;border-radius:999px;border:1px solid rgba(244,239,228,.35);color:var(--on-dark)}
+.tabs a[aria-current="true"]{background:var(--on-dark);color:var(--dawn-1);border-color:var(--on-dark)}
+.vsec{padding:44px 0 8px}
+.vsec h2{font-family:var(--display);font-weight:400;font-size:1.5rem;letter-spacing:-.02em;margin-bottom:18px}
+.grid-shorts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+@media (min-width:760px){.grid-shorts{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.grid-kids{display:grid;gap:18px}
+@media (min-width:760px){.grid-kids{grid-template-columns:1fr 1fr}}
+.vbox video{display:block;width:100%;border-radius:14px;background:#1f3349}
+.grid-shorts video{aspect-ratio:9/16;object-fit:cover}
+.grid-kids video{aspect-ratio:16/9}
+.vbox .cap{padding:12px 2px 0}
+.vbox .cap b{display:block;font-weight:600}
+.vbox .cap span{font-size:.85rem;color:var(--muted)}
+.vbox .cap p{font-size:.9rem;color:var(--muted);margin-top:6px}
+.vfoot{padding:56px 0 72px}
+</style>
+</head>
+<body>
+
+<!-- ===================== HOME ===================== -->
+<div class="view" data-view="home">
+<header class="hero">
+  <div class="wrap">
+    <div class="topbar">
+      <a class="brand" href="#home">
+        <img src="images/prok-logo.svg" width="30" height="30" alt="">
+        <span><b>천호동교회</b><small aria-label="한국기독교장로회">한국기독교장로회</small></span>
+      </a>
+      <a class="toplink" href="#sunday">예배 안내</a>
+    </div>
+    <div class="hero-copy">
+      <p class="eyebrow">SINCE 1954</p>
+      <h1>하나님 나라,<br><b>사랑 이야기</b>를<br>써 가는 교회</h1>
+      <p class="when">주일 오전 11시 <span>· 청량리 예배당</span></p>
+      <div class="cta">
+        <a class="btn solid" href="#first">처음 오셨나요? <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn ghost" href="#sunday">오시는 길</a>
+      </div>
+    </div>
+  </div>
+  <svg class="route wide" viewBox="0 0 1200 300" role="img" aria-label="1954년 천호동에서 시작한 천호동교회와 1981년 청량리에서 시작한 동명교회가 2024년 하나로 만나 다시 천호동으로 이어지는 여정">
+    <path class="line l-long" pathLength="1" d="M80 228 C 200 238, 320 210, 450 218 S 650 214, 760 160"/>
+    <path class="line l-short" pathLength="1" d="M352 82 C 450 74, 540 96, 620 124 S 718 158, 760 160"/>
+    <path class="dash late" d="M760 160 C 880 164, 990 146, 1110 148"/>
+    <circle class="dot" cx="80" cy="228" r="6"/>
+    <circle class="dot d-short" cx="352" cy="82" r="5.5"/>
+    <circle class="dot late" cx="760" cy="160" r="8"/>
+    <circle class="dot end late" cx="1110" cy="148" r="7"/>
+    <text x="80" y="272"><tspan class="yr">1954</tspan><tspan dx="10">천호동교회 · 천호동에서 시작</tspan></text>
+    <text class="t-short" x="352" y="52"><tspan class="yr">1981</tspan><tspan dx="10">동명교회 · 청량리에서 시작</tspan></text>
+    <text class="late" x="778" y="198"><tspan class="yr">2024</tspan><tspan dx="8">하나로</tspan></text>
+    <text class="late" x="1110" y="114" text-anchor="end"><tspan class="yr">다시, 천호동</tspan></text>
+    <text class="late" x="1110" y="186" text-anchor="end">새 예배당을 짓고 있어요</text>
+  </svg>
+  <svg class="route narrow" viewBox="0 0 400 240" role="img" aria-label="1954년 천호동에서 시작한 천호동교회와 1981년 청량리에서 시작한 동명교회가 2024년 하나로 만나 다시 천호동으로 이어지는 여정">
+    <path class="line l-long" pathLength="1" d="M20 182 C 80 190, 130 178, 178 168 S 236 146, 252 128"/>
+    <path class="line l-short" pathLength="1" d="M112 64 C 150 60, 186 76, 214 96 S 244 126, 252 128"/>
+    <path class="dash late" d="M252 128 C 296 130, 338 120, 380 120"/>
+    <circle class="dot" cx="20" cy="182" r="5"/>
+    <circle class="dot d-short" cx="112" cy="64" r="4.5"/>
+    <circle class="dot late" cx="252" cy="128" r="6.5"/>
+    <circle class="dot end late" cx="380" cy="120" r="5.5"/>
+    <text x="14" y="216"><tspan class="yr">1954</tspan><tspan dx="6">천호동교회</tspan></text>
+    <text class="t-short" x="104" y="42"><tspan class="yr">1981</tspan><tspan dx="6">동명교회</tspan></text>
+    <text class="late" x="262" y="160"><tspan class="yr">2024</tspan><tspan dx="5">하나로</tspan></text>
+    <text class="late" x="388" y="86" text-anchor="end"><tspan class="yr">다시, 천호동</tspan></text>
+    <text class="late" x="388" y="104" text-anchor="end">새 예배당</text>
+  </svg>
+</header>
+
+<figure class="seat">
+  <img src="images/pews.jpg" alt="청량리 예배당의 비어 있는 나무 의자들" width="1800" height="801">
+  <figcaption>
+    <div class="wrap">
+      <p>당신의 자리가 있어요</p>
+      <p>처음 오신 분도, 오랜만에 오신 분도 편하게 오세요.</p>
+    </div>
+  </figcaption>
+</figure>
+
+<main>
+  <section class="sec greet" id="greet">
+    <div class="wrap">
+      <p class="label">담임목사 인사</p>
+      <p class="g-lead">반갑습니다.<br>우리는 예수님이 선포하고 보여 주신 십자가 사랑을 신앙의 출발점이자 목적지로 삼습니다.</p>
+      <div class="g-body">
+        <p>분노와 욕망, 깨어진 자존감, 자기중심성이라는 견고한 성 안에서 외로워진 마음이 회복되고, 일터와 가정의 평범한 하루가 하나님 나라의 다스림 안에 있기를 꿈꿉니다.</p>
+        <p>예배로 그 나라를 누리고, 양육으로 배우고, 말씀과 기도로 살아내며, 당신이 살아가는 그곳이 하나님 나라의 입구가 되기를 기도합니다.</p>
+      </div>
+      <p class="g-sign"><span>담임목사</span> 김자호</p>
+    </div>
+  </section>
+
+  <section class="sec" id="first">
+    <div class="wrap">
+      <p class="label">처음 오시는 분께</p>
+      <h2 class="h2">있는 그대로 오시면 돼요</h2>
+      <ol class="firsts">
+        <li><span class="n">01</span><h3>이렇게 예배해요</h3><p>찬양으로 시작해 말씀과 기도로 이어집니다. 찬송가 가사는 앞 화면에 띄워 드려요.</p></li>
+        <li><span class="n">02</span><h3>아이와 함께 오세요</h3><p>같은 시간 소예배실에서 어린이 교회학교 예배를 따로 드려요.</p></li>
+        <li><span class="n">03</span><h3>함께 밥을 먹어요</h3><p>예배를 마치면 점심을 나누고, 목장별로 모여 한 주의 삶을 이야기해요.</p></li>
+        <li><span class="n">04</span><h3>등록은 천천히</h3><p>등록하지 않으셔도 누구나 예배에 함께하실 수 있어요. 마음이 정해지면 이렇게 한 가족이 됩니다.</p>
+          <div class="steps"><span>예배 참석</span><i>—</i><span>등록카드</span><i>—</i><span>담임목사 심방</span><i>—</i><span>환영</span></div></li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="sec sunday" id="sunday">
+    <div class="wrap">
+      <p class="label">주일에 만나요</p>
+      <div class="sun-grid">
+        <div>
+          <p class="clock">11:00</p>
+          <p class="clock-sub">주일 공동체 예배<span>청량리 예배당 본당</span></p>
+          <ul class="times">
+            <li><span>어린이 교회학교</span><span>주일 11:00 · 소예배실</span></li>
+            <li><span>청년부 모임</span><span>주일 13:30 · 소예배실</span></li>
+            <li><span>목장 모임</span><span>주일 13:30</span></li>
+            <li><span>새벽 말씀 강해</span><span>화–금 05:30 · 본당</span></li>
+          </ul>
+        </div>
+        <div>
+          <p class="place">서울시 동대문구 제기로 131<br>한신그린상가 6층</p>
+          <p class="place-sub">천호동교회 (구 동명교회)</p>
+          <div class="btnrow">
+            <a class="btn solid" href="https://map.naver.com/p/search/%EB%8F%99%EB%AA%85%EA%B5%90%ED%9A%8C/place/1737245853?c=15.00,0,0,0,dh&amp;placePath=%2Fhome%3Fbk_query%3D%EB%8F%99%EB%AA%85%EA%B5%90%ED%9A%8C%26entry%3Dbmp%26from%3Dmap%26fromPanelNum%3D2%26timestamp%3D202611082306%26locale%3Dko%26svcName%3Dmap_pcv5%26searchText%3D%EB%8F%99%EB%AA%85%EA%B5%90%ED%9A%8C">네이버 지도 <span class="arrow" aria-hidden="true">→</span></a>
+            <a class="btn ghost" href="tel:0232950691">02-3295-0691</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec week" id="week">
+    <div class="wrap">
+      <div class="week-head">
+        <div><p class="label">천호동교회</p><h2 class="h2">이번 주 말씀과 소식</h2></div>
+        <span class="stamp" id="wkDate"></span>
+      </div>
+      <div class="week-grid">
+        <div class="sermon">
+          <p class="season" id="wkSeason"></p>
+          <h3 id="wkTitle"></h3>
+          <p class="ref" id="wkRef"></p>
+        </div>
+        <div>
+          <ul class="cal" id="wkCal"></ul>
+          <details class="news">
+            <summary>교회 소식 <span id="wkCount"></span></summary>
+            <ol id="wkNotices"></ol>
+          </details>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="sec story" id="story">
+    <div class="wrap">
+      <p class="label">우리 이야기</p>
+      <h2 class="h2">두 마을을 섬겨 온 두 교회가<br>하나 되었어요</h2>
+      <ol class="journey">
+        <li><span class="yr">1954</span><h3>천호동에서 시작한 천호동교회</h3><p>서울 강동구 천호동에서 천호동교회가 첫걸음을 내디뎠어요.</p></li>
+        <li><span class="yr">1981</span><h3>청량리에서 시작한 동명교회</h3><p>동명교회가 첫 예배를 드리고 40년 넘게 동대문과 청량리 마을을 섬겼어요.</p></li>
+        <li><span class="yr">2024</span><h3>하나가 되었어요</h3><p>두 교회가 하나 되어 청량리 예배당에서 함께 예배해요.</p></li>
+        <li class="next"><span class="yr">다시, 천호동</span><h3>새 예배당을 짓고 있어요</h3><p>천호동에 새 예배당을 세우는 시작과 마무리를 위해 함께 기도해요.</p></li>
+      </ol>
+      <p class="motto">여호와의 열심이 이를 이루시리라<small>우리의 소망 2026 · 이사야 9:7</small></p>
+    </div>
+  </section>
+
+  <section class="sec media" id="media">
+    <div class="wrap">
+      <div class="m-head">
+        <div>
+          <p class="label">말씀 영상</p>
+          <h2 class="h2">매일 새벽, 그리고 주일</h2>
+          <p class="lede">화–금 새벽과 주일의 말씀을 1분 영상으로, 아이들에게는 성경 동화로 전해요.</p>
+        </div>
+      </div>
+      <div class="mrows">
+        <div class="mrow"><div class="mlabel"><b>주일</b><span>주일 공동체 예배</span></div><div class="mlist" id="rowSun"></div></div>
+        <div class="mrow"><div class="mlabel"><b>새벽</b><span id="dawnWeek">이번 주 화–금</span></div><div class="mlist" id="rowDawn"></div></div>
+        <div class="mrow"><div class="mlabel"><b>어린이</b><span>성경 동화</span></div><div class="kgrid" id="rowKids"></div></div>
+      </div>
+      <div class="m-links">
+        <a href="#videos" id="allLink">영상 모두 보기 <span class="arrow" aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </section>
+</main>
+</div>
+
+<!-- ===================== VIDEOS ===================== -->
+<div class="view" data-view="videos">
+  <div class="vhead">
+    <div class="wrap">
+      <div class="topbar">
+        <a class="brand" href="#home">
+          <img src="images/prok-logo.svg" width="30" height="30" alt="">
+          <span><b>천호동교회</b><small aria-label="한국기독교장로회">한국기독교장로회</small></span>
+        </a>
+        <a class="toplink" href="#media">← 뒤로가기</a>
+      </div>
+      <h1>영상</h1>
+      <p>화–금 새벽과 주일에 나눈 말씀을 영상으로 다시 만나요. 누르면 유튜브에서 열려요.</p>
+      <nav class="tabs" id="tabs" aria-label="영상 분류"></nav>
+    </div>
+  </div>
+  <div class="wrap" id="videoList"></div>
+  <div class="wrap vfoot"><a class="btn ghost" href="#media">← 뒤로가기</a></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot">
+      <div>
+        <div class="fbrand">
+          <img src="images/prok-logo.svg" width="44" height="44" alt="한국기독교장로회 로고">
+          <div class="fname"><h2>천호동교회</h2><small aria-label="한국기독교장로회"><span aria-hidden="true">한</span><span aria-hidden="true">국</span><span aria-hidden="true">기</span><span aria-hidden="true">독</span><span aria-hidden="true">교</span><span aria-hidden="true">장</span><span aria-hidden="true">로</span><span aria-hidden="true">회</span></small></div>
+          <span class="fsep" aria-hidden="true"></span>
+          <div class="fpastor">
+            <p>담임목사 김자호</p>
+            <button class="serve-btn" type="button" aria-expanded="false" aria-controls="serveList">섬기는 사람들 <span aria-hidden="true">+</span></button>
+          </div>
+        </div>
+        <ul class="serve-list" id="serveList" hidden>
+          <li><span>원로목사</span>김복기</li>
+          <li><span>전도사</span>이현근</li>
+          <li><span>시무장로</span>김희선 · 김선영 · 은일수</li>
+          <li><span>원로장로</span>서미숙 · 김은석</li>
+        </ul>
+        <dl class="ftimes">
+          <dt>주일 공동체 예배</dt><dd>주일 11:00</dd>
+          <dt>어린이 교회학교</dt><dd>주일 11:00</dd>
+          <dt>청년부 모임</dt><dd>주일 13:30</dd>
+          <dt>목장 모임</dt><dd>주일 13:30</dd>
+          <dt>새벽 말씀 강해</dt><dd>화–금 05:30</dd>
+        </dl>
+      </div>
+      <dl>
+        <dt>예배당</dt><dd>서울시 동대문구 제기로 131 한신그린상가 6층<br>천호동교회 (구 동명교회)</dd>
+        <dt>우편번호</dt><dd>02463</dd>
+        <dt>전화</dt><dd>02-3295-0691</dd>
+        <dt>팩스</dt><dd>02-3295-0692</dd>
+      </dl>
+      <div>
+        <p class="sub" style="margin-top:0">헌금 계좌</p>
+        <p class="acc">우리은행 1005-704-807983</p>
+        <p class="sub" style="margin-top:2px">예금주 천호동교회</p>
+        <button class="copy" type="button" id="copy">계좌번호 복사</button>
+        <span id="msg" role="status"></span>
+      </div>
+    </div>
+    <div class="legal"><span>새 예배당 부지 · 서울시 강동구 천호동 424-1</span><span>© 천호동교회</span></div>
+  </div>
+</footer>
+
+<script>
+/* ===== 매주 바꾸는 곳: 주보를 받으면 WEEK만 고칩니다 ===== */
+const WEEK = {
+  date: '2026. 11. 8.',
+  season: '창조절 열째 주일',
+  title: '은혜를 잊으면,\n내 힘으로 이룬 줄 착각한다',
+  ref: '역대하 32:24–31 · 김자호 목사',
+  calendar: [
+    ['11.15 주일', '추수감사주일 · 성찬식'],
+    ['11.22 주일', '교회 김장'],
+    ['11.26–27', '노회 목회자 수련회'],
+  ],
+  notices: [
+    '11월 15일은 추수감사주일이에요. 한 해의 은혜를 돌아보며 감사예배와 성찬식을 함께 드려요. 한 해 동안 쓴 필사노트나 감사노트도 함께 드릴 수 있어요.',
+    '새 예배당 건축을 위해 11월 공동체 기도문으로 함께 기도하고 있어요. 특별새벽기도회에 함께해 주신 모든 분께 감사드려요.',
+    '청년부는 16주 일대일 제자양육 과정을 함께하고 있어요.',
+    '새벽에는 이사야서를 차례로 읽고 있어요. (화–금 오전 5시 30분)',
+    '11월에 함께 외우는 말씀은 로마서 8:38–39예요.',
+  ],
+};
+const $ = id => document.getElementById(id);
+const make = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
+
+$('wkSeason').textContent = WEEK.season;
+$('wkTitle').textContent = WEEK.title;
+$('wkRef').textContent = WEEK.ref;
+$('wkDate').textContent = WEEK.date;
+WEEK.calendar.forEach(([d, t]) => { const li = make('li'); li.append(make('b', '', d), make('span', '', t)); $('wkCal').append(li); });
+WEEK.notices.forEach(t => $('wkNotices').append(make('li', '', t)));
+$('wkCount').textContent = WEEK.notices.length;
+
+/* ===== 말씀 영상 (유튜브 연결) =====
+   새 영상은 맨 위에 한 줄. cat = shorts(말씀 영상) | kids(어린이 성경 동화)
+   url = 유튜브 영상 주소, thumb = videos/ 폴더의 썸네일 이름 */
+const CHANNEL = '';   // 유튜브 채널 주소
+/* cat: sunday(주일 말씀) | dawn(새벽 말씀) | kids(어린이 성경 동화, track: sunday|dawn)
+   date: YYYY-MM-DD, url: 유튜브 영상 주소, thumb: videos/ 폴더 썸네일 이름. 새 영상은 아무 데나 한 줄 추가 (날짜로 정렬됨) */
+const VIDEOS = [
+  {cat:'sunday', date:'2026-11-08', title:'은혜를 잊으면, 내 힘으로 이룬 줄 착각한다', ref:'역대하 32:24–31', thumb:'shorts-20261108', url:'https://www.youtube.com/watch?v=Xy3n5kZ3Ijk'},
+  {cat:'dawn',   date:'2026-11-06', title:'실로아 물과 낮아짐의 십자가', ref:'이사야 8:1–15', thumb:'shorts-20261106', url:'https://www.youtube.com/watch?v=_F_ybJcMf6g'},
+  {cat:'kids', track:'sunday', date:'2026-11-08', title:'히스기야 왕의 창고', ref:'역대하 32:24–31', thumb:'hezekiah-kids', url:'https://www.youtube.com/watch?v=2gl6e0Bjps8'},
+  {cat:'kids', track:'dawn',   date:'2026-11-06', title:'이사야와 작은 시냇물', ref:'이사야 8:1–15', thumb:'isaiah8-kids', url:'https://www.youtube.com/watch?v=FDmNA28IkSw'},
+];
+const CATS = {sunday:'주일 말씀', dawn:'새벽 말씀', kids:'어린이 성경 동화'};
+const DAYS = ['일','월','화','수','목','금','토'];
+const md = d => { const [y,m,dd] = d.split('-').map(Number); return `${m}. ${dd}.`; };
+const dow = d => DAYS[new Date(d + 'T00:00:00').getDay()];
+VIDEOS.sort((a, b) => b.date.localeCompare(a.date));
+const PLAY = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M3 1.5v13l11-6.5z"/></svg>';
+
+function linkOrBox(v, cls) {
+  const href = v.url || CHANNEL;
+  const e = make(href ? 'a' : 'div', cls);
+  if (href) { e.href = href; e.target = '_blank'; e.rel = 'noopener'; e.setAttribute('aria-label', `${v.title} 유튜브에서 보기`); }
+  return e;
+}
+function thumb(v) {
+  const t = linkOrBox(v, 'vthumb');
+  const img = make('img'); img.src = `videos/${v.thumb}.jpg`; img.alt = '';
+  t.append(img);
+  if (v.url || CHANNEL) { const p = make('span', 'play'); p.innerHTML = PLAY; t.append(p); }
+  return t;
+}
+function item(v) {
+  const wrap = make('div', 'item');
+  const tag = v.cat === 'kids' ? (v.track === 'sunday' ? '주일편' : '새벽편') : (v.cat === 'sunday' ? '주일' : dow(v.date) + ' 새벽');
+  wrap.append(thumb(v), make('span', 'd', `${tag} · ${md(v.date)}`), make('span', 't', v.title));
+  return wrap;
+}
+// 주일: 최근 주일 말씀을 최신순으로
+VIDEOS.filter(v => v.cat === 'sunday').slice(0, 6).forEach(v => $('rowSun').append(thumb(v)));
+// 새벽: 가장 최근 새벽 말씀이 있는 주의 화–금을 순서대로
+const dawn = VIDEOS.filter(v => v.cat === 'dawn');
+if (dawn.length) {
+  const last = new Date(dawn[0].date + 'T00:00:00');
+  const tue = new Date(last); tue.setDate(last.getDate() - ((last.getDay() + 5) % 7));
+  for (let i = 0; i < 4; i++) {
+    const d = new Date(tue); d.setDate(tue.getDate() + i);
+    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
+    const v = dawn.find(x => x.date === key);
+    if (v) $('rowDawn').append(thumb(v));
+    else { const sl = make('div', 'slot'); sl.append(make('b', '', DAYS[d.getDay()]), make('span', '', `${d.getMonth() + 1}. ${d.getDate()}.`)); $('rowDawn').append(sl); }
+  }
+  $('dawnWeek').textContent = `${tue.getMonth() + 1}. ${tue.getDate()}. 주간 화–금`;
+}
+// 어린이: 주일편 · 새벽편 최신 1편씩
+[['sunday', '주일편'], ['dawn', '새벽편']].forEach(([tr, name]) => {
+  const col = make('div', 'kcol'); col.append(make('span', 'kt ' + (tr === 'sunday' ? 'sun' : 'dawn'), name));
+  const v = VIDEOS.find(x => x.cat === 'kids' && x.track === tr);
+  if (v) { col.append(thumb(v), make('span', 'cap', v.title)); } else col.append(make('div', 'none'));
+  $('rowKids').append(col);
+});
+if (CHANNEL) { const a = $('allLink'); a.href = CHANNEL; a.target = '_blank'; a.rel = 'noopener'; a.firstChild.textContent = '유튜브 채널에서 모두 보기 '; }
+
+function renderVideos(filter) {
+  $('tabs').innerHTML = '';
+  [['all', '전체'], ...Object.entries(CATS)].forEach(([k, name]) => {
+    const a = make('a', '', name); a.href = k === 'all' ? '#videos' : '#videos-' + k;
+    if (k === filter) a.setAttribute('aria-current', 'true'); $('tabs').append(a);
+  });
+  $('videoList').innerHTML = '';
+  for (const c in CATS) {
+    if (filter !== 'all' && filter !== c) continue;
+    const list = VIDEOS.filter(v => v.cat === c); if (!list.length) continue;
+    const sec = make('section', 'vsec archive'); sec.append(make('h2', '', CATS[c]));
+    const g = make('div', c === 'kids' ? 'agrid wide' : 'agrid'); list.forEach(v => g.append(item(v)));
+    sec.append(g); $('videoList').append(sec);
+  }
+}
+function route() {
+  const h = (location.hash || '#home').slice(1);
+  const vids = h === 'videos' || h.startsWith('videos-');
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.dataset.view === (vids ? 'videos' : 'home')));
+  if (vids) { const f = h.split('-')[1]; renderVideos(CATS[f] ? f : 'all'); window.scrollTo(0, 0); }
+  else { const t = $(h); if (t && h !== 'home') requestAnimationFrame(() => t.scrollIntoView()); else window.scrollTo(0, 0); }
+}
+window.addEventListener('hashchange', route); route();
+
+const sb = document.querySelector('.serve-btn');
+sb.addEventListener('click', () => { const open = sb.getAttribute('aria-expanded') !== 'true'; sb.setAttribute('aria-expanded', open); $('serveList').hidden = !open; sb.lastElementChild.textContent = open ? '–' : '+'; });
+$('copy').addEventListener('click', async () => {
+  try { await navigator.clipboard.writeText('1005-704-807983'); $('msg').textContent = '계좌번호를 복사했어요.'; }
+  catch (e) { $('msg').textContent = '번호를 길게 눌러 복사해 주세요.'; }
+});
+
+/* 교단명 끝선 맞춤: '천'의 ㄴ 세로획 ~ '회' 끝 획에 맞춰 양끝 정렬 */
+function inkBox(text, font){
+  const S=4, c=document.createElement('canvas'); c.lang='ko'; c.style.cssText='position:fixed;left:-9999px;top:0;visibility:hidden'; document.body.appendChild(c); const x=c.getContext('2d'); if('lang' in x) x.lang='ko';
+  x.font=font; const adv=x.measureText(text).width, px=parseFloat(font.match(/([\d.]+)px/)[1]);
+  const w=Math.ceil((adv+40)*S), h=Math.ceil(px*2.4*S);
+  c.width=w; c.height=h; x.scale(S,S); x.font=font; x.textBaseline='middle'; x.fillStyle='#000'; x.fillText(text,20,h/S/2);
+  const d=x.getImageData(0,0,w,h).data; let top=h,bot=-1,l=w,r=-1;
+  for(let j=0;j<h;j++)for(let i=0;i<w;i++)if(d[(j*w+i)*4+3]>110){if(j<top)top=j;if(j>bot)bot=j;if(i<l)l=i;if(i>r)r=i;}
+  let lb=w; const y0=bot-(bot-top)*0.2;   // 아래쪽 20% = 받침(ㄴ) 영역
+  for(let j=Math.floor(y0);j<=bot;j++)for(let i=0;i<w;i++)if(d[(j*w+i)*4+3]>110){if(i<lb)lb=i;break;}
+  c.remove();
+  return {l:l/S-20, r:(r+1)/S-20, low:lb/S-20, adv};
+}
+function alignSub(){
+  document.querySelectorAll('.brand > span, .fname').forEach(box=>{
+    const nm=box.firstElementChild, sub=box.querySelector('small'); if(!nm||!sub) return;
+    if(!sub.querySelector('span')){ const t=sub.textContent; sub.textContent=''; [...t].forEach(ch=>{const e=document.createElement('span');e.setAttribute('aria-hidden','true');e.textContent=ch;sub.appendChild(e);}); }
+    sub.style.fontSize=''; sub.style.marginLeft=''; sub.style.width='';
+    const nf=getComputedStyle(nm), sf=getComputedStyle(sub);
+    const f=(cs)=>`${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`;
+    const a=inkBox(nm.textContent.trim()[0], f(nf));              // 첫 글자 '천'
+    const name=inkBox(nm.textContent.trim(), f(nf));
+    const ls=parseFloat(nf.letterSpacing)||0, n=nm.textContent.trim().length;
+    const r0=document.createRange(); r0.selectNodeContents(nm); const domW=r0.getBoundingClientRect().width-ls*n;
+    const k=(domW>0&&name.adv>0)?domW/name.adv:1;                 // 화면 실제 폭으로 보정
+    const left=a.low*k, right=name.r*k + ls*(n-1);                   // 이름 잉크 끝(자간 포함)
+    const t=[...(sub.getAttribute('aria-label')||sub.textContent)];
+    let fs=parseFloat(sf.fontSize);
+    const sb=()=>{const ff=`${sf.fontWeight} ${fs}px ${sf.fontFamily}`; return {h:inkBox(t[0],ff), z:inkBox(t[t.length-1],ff), all:t.reduce((s,ch)=>s+inkBox(ch,ff).adv,0)};};
+    let m=sb(); const target=()=>(right-left)+m.h.l+(m.z.adv-m.z.r);
+    if(m.all>target()){ fs=fs*target()/m.all*0.97; sub.style.fontSize=fs+'px'; m=sb(); }
+    sub.style.marginLeft=(left-m.h.l)+'px';
+    sub.style.width=target()+'px';
+  });
+}
+(document.fonts?document.fonts.ready:Promise.resolve()).then(alignSub);
+if(document.fonts){document.fonts.addEventListener('loadingdone',alignSub);
+  ['600 16px "BrandKR"','400 16px "BrandKR"','600 16px "IBM Plex Sans KR"','400 16px "Hahmlet"','400 16px "IBM Plex Sans KR"'].forEach(f=>document.fonts.load(f,'천호동교회한국기독장로').then(alignSub).catch(()=>{}));}
+addEventListener('load',()=>{alignSub();setTimeout(alignSub,800);setTimeout(alignSub,2000)});
+addEventListener('resize',()=>{clearTimeout(window.__as);window.__as=setTimeout(alignSub,150)});
+</script>
+</body>
+</html>
