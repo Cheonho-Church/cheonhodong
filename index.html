@@ -169,6 +169,34 @@ details.news[open] summary::after{content:"–"}
 details.news ol{padding-left:1.25em;display:grid;gap:10px;margin-top:6px;color:var(--ink);font-size:.95rem}
 details.news li::marker{color:var(--olive);font-weight:600}
 
+
+/* ---------- this week: photos (+ 크게 보기) ---------- */
+.week-photos{margin-top:44px;padding-top:26px;border-top:1px solid var(--hair)}
+.week-photos[hidden]{display:none}
+.ph-head{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:14px}
+.ph-head p{font-size:.88rem;color:var(--muted)}
+.ph-grid{display:grid;grid-template-columns:repeat(var(--n,3),1fr);gap:10px}
+.ph-grid button{all:unset;cursor:zoom-in;display:block;position:relative;overflow:hidden;border-radius:3px;aspect-ratio:4/3;background:rgba(70,58,36,.08)}
+.ph-grid button:focus-visible{outline:2px solid var(--dawn);outline-offset:3px}
+.ph-grid img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .6s ease}
+@media (hover:hover){.ph-grid button:hover img{transform:scale(1.03)}}
+.ph-grid.one{grid-template-columns:1fr}.ph-grid.one button{aspect-ratio:16/9}
+@media (max-width:560px){.ph-grid.three{grid-template-columns:1fr 1fr}.ph-grid.three button:first-child{grid-column:1/-1;aspect-ratio:16/9}}
+dialog.lb{border:0;padding:0;margin:0;max-width:none;max-height:none;width:100vw;height:100dvh;background:rgba(18,22,30,.97);color:#f4efe4}
+dialog.lb::backdrop{background:rgba(18,22,30,.94)}
+dialog.lb[open]{display:flex;flex-direction:column;align-items:center;justify-content:center;animation:lbIn .25s ease}
+@keyframes lbIn{from{opacity:0}to{opacity:1}}
+.lb figure{margin:0;display:flex;flex-direction:column;align-items:center;gap:14px;max-width:min(1100px,92vw)}
+.lb img{max-width:92vw;max-height:76dvh;object-fit:contain;border-radius:2px;user-select:none}
+.lb figcaption{font-size:.95rem;line-height:1.6;text-align:center;color:rgba(244,239,228,.86);padding:0 12px}
+.lb .lb-n{font-size:.8rem;letter-spacing:.08em;color:rgba(244,239,228,.55);font-variant-numeric:tabular-nums}
+.lb button{all:unset;cursor:pointer;position:absolute;display:grid;place-items:center;width:48px;height:48px;border-radius:50%;color:#f4efe4;font-size:1.5rem;line-height:1}
+.lb button:hover,.lb button:focus-visible{background:rgba(244,239,228,.12)}
+.lb .lb-x{top:14px;right:14px}
+.lb .lb-prev{left:10px;top:50%;transform:translateY(-50%)}
+.lb .lb-next{right:10px;top:50%;transform:translateY(-50%)}
+.lb.single .lb-prev,.lb.single .lb-next,.lb.single .lb-n{display:none}
+
 /* ---------- story ---------- */
 .story{background:var(--ivory)}
 .journey{list-style:none;padding:0;margin-top:48px;position:relative}
@@ -434,6 +462,10 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
           </details>
         </div>
       </div>
+      <div class="week-photos" id="wkPhotos" hidden>
+        <div class="ph-head"><p id="wkPhTitle">이번 주 교회 풍경</p></div>
+        <div class="ph-grid" id="wkPhGrid"></div>
+      </div>
     </div>
   </section>
 
@@ -538,6 +570,12 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
   </div>
 </footer>
 
+<dialog class="lb" id="lb" aria-label="사진 크게 보기">
+  <button class="lb-x" type="button" aria-label="닫기">×</button>
+  <button class="lb-prev" type="button" aria-label="이전 사진">‹</button>
+  <figure><img id="lbImg" alt=""><figcaption id="lbCap"></figcaption><span class="lb-n" id="lbN"></span></figure>
+  <button class="lb-next" type="button" aria-label="다음 사진">›</button>
+</dialog>
 <script>
 /* ===== 매주 바꾸는 곳: 주보를 받으면 WEEK만 고칩니다 ===== */
 const WEEK = {
@@ -557,6 +595,10 @@ const WEEK = {
     '새벽에는 이사야서를 차례로 읽고 있어요. (화–금 오전 5시 30분)',
     '11월에 함께 외우는 말씀은 로마서 8:38–39예요.',
   ],
+  /* 사진(선택): 행사가 있는 주에만 1~3장. 없으면 [] → 칸이 숨겨져요.
+     { src:'photos/파일.jpg', alt:'사진 설명(화면 낭독용)', caption:'한 줄 캡션' } */
+  photoTitle: '이번 주 교회 풍경',
+  photos: [],
 };
 const $ = id => document.getElementById(id);
 const make = (tag, cls, text) => { const e = document.createElement(tag); if (cls) e.className = cls; if (text !== undefined) e.textContent = text; return e; };
@@ -568,6 +610,28 @@ $('wkDate').textContent = WEEK.date;
 WEEK.calendar.forEach(([d, t]) => { const li = make('li'); li.append(make('b', '', d), make('span', '', t)); $('wkCal').append(li); });
 WEEK.notices.forEach(t => $('wkNotices').append(make('li', '', t)));
 $('wkCount').textContent = WEEK.notices.length;
+
+/* ----- 이번 주 사진 + 크게 보기 ----- */
+(function(){
+  const P = (WEEK.photos||[]).slice(0,3); if(!P.length) return;
+  const box=$('wkPhotos'), grid=$('wkPhGrid'), lb=$('lb'), img=$('lbImg'), cap=$('lbCap'), num=$('lbN');
+  $('wkPhTitle').textContent = WEEK.photoTitle || '이번 주 교회 풍경';
+  grid.classList.add(['','one','two','three'][P.length]); grid.style.setProperty('--n', P.length);
+  let cur=0;
+  const show=i=>{cur=(i+P.length)%P.length; const p=P[cur]; img.src=p.src; img.alt=p.alt||p.caption||''; cap.textContent=p.caption||''; num.textContent=`${cur+1} / ${P.length}`;};
+  P.forEach((p,i)=>{const b=make('button'); b.type='button'; b.setAttribute('aria-label',(p.caption||'사진')+' 크게 보기');
+    const im=make('img'); im.src=p.src; im.alt=p.alt||p.caption||''; im.loading='lazy'; im.decoding='async'; b.append(im);
+    b.addEventListener('click',()=>{show(i); lb.classList.toggle('single',P.length<2); if(lb.showModal) lb.showModal(); else lb.setAttribute('open','');}); grid.append(b);});
+  const close=()=>{ if(lb.close) lb.close(); else lb.removeAttribute('open'); };
+  lb.querySelector('.lb-x').addEventListener('click',close);
+  lb.querySelector('.lb-prev').addEventListener('click',e=>{e.stopPropagation();show(cur-1)});
+  lb.querySelector('.lb-next').addEventListener('click',e=>{e.stopPropagation();show(cur+1)});
+  lb.addEventListener('click',e=>{ if(e.target===lb) close(); });
+  lb.addEventListener('keydown',e=>{ if(e.key==='ArrowLeft') show(cur-1); if(e.key==='ArrowRight') show(cur+1); });
+  let x0=null; lb.addEventListener('touchstart',e=>{x0=e.touches[0].clientX},{passive:true});
+  lb.addEventListener('touchend',e=>{ if(x0===null) return; const dx=e.changedTouches[0].clientX-x0; if(Math.abs(dx)>50) show(cur+(dx<0?1:-1)); x0=null; });
+  box.hidden=false;
+})();
 
 /* ===== 말씀 영상 (유튜브 연결) =====
    새 영상은 맨 위에 한 줄. cat = shorts(말씀 영상) | kids(어린이 성경 동화)
