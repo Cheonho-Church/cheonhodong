@@ -146,6 +146,7 @@ h1,h2,h3,p,ol,ul,dl,dd,figure{margin:0}
 .firsts p{grid-column:2;color:var(--muted);font-size:.96rem}
 .steps{grid-column:2;display:flex;flex-wrap:wrap;align-items:center;gap:6px 10px;margin-top:10px;font-size:.86rem;color:var(--ink)}
 .steps i{font-style:normal;color:var(--hair)}
+.steps .grp{display:inline-flex;align-items:center;gap:10px;white-space:nowrap}
 
 /* ---------- sunday ---------- */
 .sunday{background:var(--paper);border-top:1px solid var(--hair);border-bottom:1px solid var(--hair)}
@@ -432,7 +433,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
         <li><span class="n">02</span><h3>아이와 함께 오세요</h3><p>같은 시간 소예배실에서 어린이 교회학교 예배를 따로 드려요.</p></li>
         <li><span class="n">03</span><h3>함께 밥을 먹어요</h3><p>예배를 마치면 점심을 나누고, 목장별로 모여 한 주의 삶을 이야기해요.</p></li>
         <li><span class="n">04</span><h3>등록은 천천히</h3><p>등록하지 않으셔도 누구나 예배에 함께하실 수 있어요. 마음이 정해지면 이렇게 한 가족이 됩니다.</p>
-          <div class="steps"><span>예배 참석</span><i>—</i><span>등록카드</span><i>—</i><span>담임목사 심방</span><i>—</i><span>환영</span></div></li>
+          <div class="steps"><span class="grp"><span>예배 참석</span><i>—</i><span>등록카드</span><i>—</i></span><span class="grp"><span>담임목사 심방</span><i>—</i><span>환영</span></span></div></li>
       </ol>
     </div>
   </section>
@@ -576,7 +577,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
         </dl>
       </div>
       <dl>
-        <dt>예배당</dt><dd>서울시 동대문구 제기로 131 한신그린상가 6층<br>천호동교회 (구 동명교회)</dd>
+        <dt>예배당</dt><dd>서울시 동대문구 제기로 131 <span style="white-space:nowrap">한신그린상가 6층</span><br>천호동교회 (구 동명교회)</dd>
         <dt>우편번호</dt><dd>02463</dd>
         <dt>전화</dt><dd>02-3295-0691</dd>
         <dt>팩스</dt><dd>02-3295-0692</dd>
@@ -711,8 +712,7 @@ if (dawn.length) {
     const d = new Date(tue); d.setDate(tue.getDate() + i);
     const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
     const v = dawn.find(x => x.date === key);
-    if (v) $('rowDawn').append(thumb(v));
-    else { const sl = make('div', 'slot'); sl.append(make('b', '', DAYS[d.getDay()]), make('span', '', `${d.getMonth() + 1}. ${d.getDate()}.`)); $('rowDawn').append(sl); }
+    if (v) $('rowDawn').append(thumb(v));   // 영상이 있는 요일만 보여 준다 (빈 칸 없음)
   }
   $('dawnWeek').textContent = `${tue.getMonth() + 1}. ${tue.getDate()}. 주간 화–금`;
 }
