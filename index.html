@@ -515,7 +515,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
       </div>
       <div class="mrows">
         <div class="mrow"><div class="mlabel"><b>주일</b><span>주일 공동체 예배</span></div><div class="mlist" id="rowSun"></div></div>
-        <div class="mrow"><div class="mlabel"><b>새벽</b><span id="dawnWeek">이번 주 화–금</span></div><div class="mlist" id="rowDawn"></div></div>
+        <div class="mrow"><div class="mlabel"><b>새벽</b><span>화–금 새벽 말씀</span></div><div class="mlist" id="rowDawn"></div></div>
         <div class="mrow"><div class="mlabel"><b>어린이</b><span>성경 동화</span></div><div class="kgrid" id="rowKids"></div></div>
       </div>
       <div class="m-links">
@@ -539,7 +539,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
         <a class="toplink" href="#media">← 뒤로가기</a>
       </div>
       <h1>영상</h1>
-      <p>화–금 새벽과 주일에 나눈 말씀을 영상으로 다시 만나요. 누르면 유튜브에서 열려요.</p>
+      <p>화–금 새벽과 주일에 나눈 말씀을 영상으로 다시 만나요. 분류마다 최근 영상 4개를 모았고, 지난 영상은 유튜브 채널에서 모두 볼 수 있어요.</p>
       <nav class="tabs" id="tabs" aria-label="영상 분류"></nav>
     </div>
   </div>
@@ -694,26 +694,14 @@ function item(v) {
   wrap.append(thumb(v), make('span', 'd', `${tag} · ${md(v.date)}`), make('span', 't', v.title));
   return wrap;
 }
-// 주일: 최근 주일 말씀을 최신순으로
-VIDEOS.filter(v => v.cat === 'sunday').slice(0, 6).forEach(v => $('rowSun').append(thumb(v)));
-// 새벽: 가장 최근 새벽 말씀이 있는 주의 화–금을 순서대로
-const dawn = VIDEOS.filter(v => v.cat === 'dawn');
-if (dawn.length) {
-  const last = new Date(dawn[0].date + 'T00:00:00');
-  const tue = new Date(last); tue.setDate(last.getDate() - ((last.getDay() + 5) % 7));
-  for (let i = 0; i < 4; i++) {
-    const d = new Date(tue); d.setDate(tue.getDate() + i);
-    const key = `${d.getFullYear()}-${String(d.getMonth() + 1).padStart(2, '0')}-${String(d.getDate()).padStart(2, '0')}`;
-    const v = dawn.find(x => x.date === key);
-    if (v) $('rowDawn').append(thumb(v));   // 영상이 있는 요일만 보여 준다 (빈 칸 없음)
-  }
-  $('dawnWeek').textContent = `${tue.getMonth() + 1}. ${tue.getDate()}. 주간 화–금`;
-}
-// 어린이: 주일편 · 새벽편 최신 1편씩
-[['sunday', '주일편'], ['dawn', '새벽편']].forEach(([tr, name]) => {
-  const col = make('div', 'kcol'); col.append(make('span', 'kt ' + (tr === 'sunday' ? 'sun' : 'dawn'), name));
-  const v = VIDEOS.find(x => x.cat === 'kids' && x.track === tr);
-  if (v) { col.append(thumb(v), make('span', 'cap', shortTitle(v.title))); } else col.append(make('div', 'none'));
+// 홈 화면: 쇼츠는 줄마다 최신 4개, 어린이 동화는 최신 2개
+const HOME_SHORTS = 4, HOME_KIDS = 2, PAGE_MAX = 4;
+VIDEOS.filter(v => v.cat === 'sunday').slice(0, HOME_SHORTS).forEach(v => $('rowSun').append(thumb(v)));
+VIDEOS.filter(v => v.cat === 'dawn').slice(0, HOME_SHORTS).forEach(v => $('rowDawn').append(thumb(v)));
+VIDEOS.filter(v => v.cat === 'kids').slice(0, HOME_KIDS).forEach(v => {
+  const col = make('div', 'kcol');
+  col.append(make('span', 'kt ' + (v.track === 'sunday' ? 'sun' : 'dawn'), `${v.track === 'sunday' ? '주일편' : '새벽편'} · ${md(v.date)}`));
+  col.append(thumb(v), make('span', 'cap', shortTitle(v.title)));
   $('rowKids').append(col);
 });
 if (CHANNEL) { ['chLink','vChLink'].forEach(id=>{ const a=$(id); a.href = CHANNEL; a.hidden = false; }); }
@@ -727,7 +715,7 @@ function renderVideos(filter) {
   $('videoList').innerHTML = '';
   for (const c in CATS) {
     if (filter !== 'all' && filter !== c) continue;
-    const list = VIDEOS.filter(v => v.cat === c); if (!list.length) continue;
+    const list = VIDEOS.filter(v => v.cat === c).slice(0, PAGE_MAX); if (!list.length) continue;   // 분류마다 최신 4개만
     const sec = make('section', 'vsec archive'); sec.append(make('h2', '', CATS[c]));
     const g = make('div', c === 'kids' ? 'agrid wide' : 'agrid'); list.forEach(v => g.append(item(v)));
     sec.append(g); $('videoList').append(sec);
