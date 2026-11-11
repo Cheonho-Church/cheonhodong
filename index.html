@@ -693,7 +693,15 @@ function linkOrBox(v, cls) {
 }
 function thumb(v) {
   const t = linkOrBox(v, 'vthumb');
-  const img = make('img'); img.src = `videos/${v.thumb}.jpg`; img.alt = '';
+  const img = make('img'); img.alt = ''; img.loading = 'lazy'; img.decoding = 'async';
+  const ytId = (v.url || '').match(/(?:v=|youtu\.be\/|shorts\/)([\w-]{11})/);
+  if (v.cat === 'kids' && ytId) {
+    // 어린이 동화: 유튜브에 올린 표지를 그대로 쓴다 (고화질 → 기본 → 홈페이지 표지 순으로 대체)
+    const id = ytId[1], local = `videos/${v.thumb}.jpg`;
+    img.src = `https://i.ytimg.com/vi/${id}/maxresdefault.jpg`;
+    img.onload = () => { if (img.naturalWidth <= 120 && !img.dataset.f) { img.dataset.f = 1; img.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`; } };
+    img.onerror = () => { if (!img.dataset.f) { img.dataset.f = 1; img.src = `https://i.ytimg.com/vi/${id}/hqdefault.jpg`; } else if (img.dataset.f !== '2') { img.dataset.f = 2; img.src = local; } };
+  } else img.src = `videos/${v.thumb}.jpg`;
   t.append(img);
   if (v.url || CHANNEL) { const p = make('span', 'play'); p.innerHTML = PLAY; t.append(p); }
   return t;
