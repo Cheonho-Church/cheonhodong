@@ -328,6 +328,12 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
 .vhead p{color:var(--on-dark-muted);margin-top:6px}
 .tabs{display:flex;gap:8px;overflow-x:auto;padding:28px 0 24px}
 .tabs a{flex:none;text-decoration:none;font-size:.9rem;padding:0 18px;min-height:42px;display:inline-flex;align-items:center;border-radius:999px;border:1px solid rgba(244,239,228,.35);color:var(--on-dark)}
+.tabs .s{display:none}
+@media (max-width:520px){
+  .tabs{gap:6px;overflow:visible}
+  .tabs a{flex:1 1 auto;justify-content:center;padding:0 8px;font-size:.82rem;min-height:40px;white-space:nowrap}
+  .tabs .l{display:none}.tabs .s{display:inline}
+}
 .tabs a[aria-current="true"]{background:var(--on-dark);color:var(--dawn-1);border-color:var(--on-dark)}
 .vsec{padding:44px 0 8px}
 .vsec h2{font-family:var(--display);font-weight:400;font-size:1.5rem;letter-spacing:-.02em;margin-bottom:18px}
@@ -713,7 +719,8 @@ if (CHANNEL) { ['chLink','vChLink'].forEach(id=>{ const a=$(id); a.href = CHANNE
 function renderVideos(filter) {
   $('tabs').innerHTML = '';
   [['all', '전체'], ...Object.entries(CATS)].forEach(([k, name]) => {
-    const a = make('a', '', name); a.href = k === 'all' ? '#videos' : '#videos-' + k;
+    const a = make('a'); const SHORT = {kids:'어린이 동화'};
+    a.append(make('span', 'l', name), make('span', 's', SHORT[k] || name)); a.href = k === 'all' ? '#videos' : '#videos-' + k;
     if (k === filter) a.setAttribute('aria-current', 'true'); $('tabs').append(a);
   });
   $('videoList').innerHTML = '';
