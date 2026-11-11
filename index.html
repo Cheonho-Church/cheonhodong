@@ -719,7 +719,7 @@ if (CHANNEL) { ['chLink','vChLink'].forEach(id=>{ const a=$(id); a.href = CHANNE
 function renderVideos(filter) {
   $('tabs').innerHTML = '';
   [['all', '전체'], ...Object.entries(CATS)].forEach(([k, name]) => {
-    const a = make('a'); const SHORT = {kids:'어린이 동화'};
+    const a = make('a'); const SHORT = {kids:'성경 동화'};
     a.append(make('span', 'l', name), make('span', 's', SHORT[k] || name)); a.href = k === 'all' ? '#videos' : '#videos-' + k;
     if (k === filter) a.setAttribute('aria-current', 'true'); $('tabs').append(a);
   });
