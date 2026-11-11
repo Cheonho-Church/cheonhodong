@@ -734,7 +734,10 @@ function renderVideos(filter) {
   $('videoList').innerHTML = '';
   for (const c in CATS) {
     if (filter !== 'all' && filter !== c) continue;
-    const list = VIDEOS.filter(v => v.cat === c).slice(0, PAGE_MAX); if (!list.length) continue;   // 분류마다 최신 4개만
+    const list = c === 'kids'
+      ? ['dawn', 'sunday'].flatMap(tr => VIDEOS.filter(v => v.cat === 'kids' && v.track === tr).slice(0, PAGE_MAX / 2))   // 동화: 새벽편 2 + 주일편 2
+      : VIDEOS.filter(v => v.cat === c).slice(0, PAGE_MAX);   // 쇼츠: 분류마다 최신 4개
+    if (!list.length) continue;
     const sec = make('section', 'vsec archive'); sec.append(make('h2', '', CATS[c]));
     const g = make('div', c === 'kids' ? 'agrid wide' : 'agrid'); list.forEach(v => g.append(item(v)));
     sec.append(g); $('videoList').append(sec);
