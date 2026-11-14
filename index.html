@@ -101,6 +101,19 @@ h1,h2,h3,p,ol,ul,dl,dd,figure{margin:0}
 .route .line{fill:none;stroke:#f4efe4;stroke-width:1.8;stroke-linecap:round}
 .route .l-short{stroke-width:1.5;stroke-opacity:.9}
 .route .dash{fill:none;stroke:#f4efe4;stroke-opacity:.8;stroke-width:2.2;stroke-dasharray:1 8;stroke-linecap:round}
+
+/* ---------- 대림절·성탄 (11월 마지막 주일 ~ 1월 6일 자동) ---------- */
+.route .star{display:none}
+.advent .route .dot.end{display:none}
+.advent .route .star{display:inline}
+.route .star .halo{fill:url(#starGlow)}
+.route .star .tw{fill:#f6e7c4}
+@media (prefers-reduced-motion:no-preference){
+  .advent .route .star .halo{animation:breathe 4.5s ease-in-out infinite;transform-box:fill-box;transform-origin:center}
+}
+@keyframes breathe{0%,100%{opacity:.55;transform:scale(.92)}50%{opacity:1;transform:scale(1.06)}}
+.advent .hero{background:radial-gradient(120% 60% at 88% 108%,rgba(214,176,118,.42) 0%,rgba(214,176,118,0) 60%),linear-gradient(180deg,var(--dawn-1) 0%,var(--dawn-2) 62%,#6f87a1 100%)}
+.advent .hero .eyebrow{color:#ecd9b4;letter-spacing:.08em}
 .route .dot{fill:#f4efe4}
 .route .dot.end{fill:none;stroke:#f4efe4;stroke-width:1.6}
 .route text{font-family:var(--body);font-size:15px;fill:#dfe7ee}
@@ -356,6 +369,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
 
 <!-- ===================== HOME ===================== -->
 <div class="view" data-view="home">
+<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs><radialGradient id="starGlow"><stop offset="0" stop-color="#f6e2b3" stop-opacity=".55"/><stop offset=".45" stop-color="#e9c98d" stop-opacity=".18"/><stop offset="1" stop-color="#e9c98d" stop-opacity="0"/></radialGradient></defs></svg>
 <header class="hero">
   <div class="wrap">
     <div class="topbar">
@@ -366,7 +380,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
       <a class="toplink" href="#sunday">예배 안내</a>
     </div>
     <div class="hero-copy">
-      <p class="eyebrow">SINCE 1954</p>
+      <p class="eyebrow" id="eyebrow">SINCE 1954</p>
       <h1>하나님 나라,<br><b>사랑 이야기</b>를<br>써 가는 교회</h1>
       <p class="when">주일 오전 11시 <span>· 청량리 예배당</span></p>
       <div class="cta">
@@ -383,6 +397,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
     <circle class="dot d-short" cx="352" cy="82" r="5.5"/>
     <circle class="dot late" cx="760" cy="160" r="8"/>
     <circle class="dot end late" cx="1110" cy="148" r="7"/>
+    <g class="star late" transform="translate(1110 148)"><circle class="halo" r="34"/><path class="tw" d="M0 -1 C .12 -.25, .25 -.12, 1 0 C .25 .12, .12 .25, 0 1 C -.12 .25, -.25 .12, -1 0 C -.25 -.12, -.12 -.25, 0 -1 Z" transform="scale(17)"/></g>
     <text x="80" y="272"><tspan class="yr">1954</tspan><tspan dx="10">천호동교회 · 천호동에서 시작</tspan></text>
     <text class="t-short" x="352" y="52"><tspan class="yr">1981</tspan><tspan dx="10">동명교회 · 청량리에서 시작</tspan></text>
     <text class="late" x="778" y="198"><tspan class="yr">2024</tspan><tspan dx="8">하나로</tspan></text>
@@ -397,6 +412,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
     <circle class="dot d-short" cx="112" cy="64" r="4.5"/>
     <circle class="dot late" cx="256" cy="128" r="6.5"/>
     <circle class="dot end late" cx="380" cy="116" r="5.5"/>
+    <g class="star late" transform="translate(380 116)"><circle class="halo" r="22"/><path class="tw" d="M0 -1 C .12 -.25, .25 -.12, 1 0 C .25 .12, .12 .25, 0 1 C -.12 .25, -.25 .12, -1 0 C -.25 -.12, -.12 -.25, 0 -1 Z" transform="scale(12)"/></g>
     <text x="14" y="216"><tspan class="yr">1954</tspan><tspan dx="6">천호동교회</tspan></text>
     <text class="t-short" x="104" y="42"><tspan class="yr">1981</tspan><tspan dx="6">동명교회</tspan></text>
     <text class="late" x="258" y="162"><tspan class="yr">2024</tspan><tspan dx="5">하나로</tspan></text>
@@ -825,6 +841,24 @@ addEventListener('resize',()=>{clearTimeout(window.__as);window.__as=setTimeout(
     a.append(document.createTextNode(label)); box.append(a);
   });
   box.hidden=false;
+})();
+
+/* 대림절·성탄: 대림절 첫째 주일부터 1월 6일(주현절)까지 자동으로 켜진다. 미리보기: 주소 끝에 ?d=2026-12-06 */
+(function(){
+  const q = new URLSearchParams(location.search).get('d');
+  const today = q ? new Date(q + 'T12:00:00') : new Date();
+  const y = today.getMonth() === 0 ? today.getFullYear() - 1 : today.getFullYear();
+  const xmas = new Date(y, 11, 25);
+  const adv4 = new Date(xmas); adv4.setDate(25 - (xmas.getDay() || 7));      // 성탄절 직전 주일
+  const adv1 = new Date(adv4); adv1.setDate(adv4.getDate() - 21);
+  const end = new Date(y + 1, 0, 6, 23, 59);
+  if (today < adv1 || today > end) return;
+  document.documentElement.classList.add('advent');
+  const NUM = ['첫째', '둘째', '셋째', '넷째'];
+  let line;
+  if (today >= new Date(y, 11, 24)) line = '성탄을 축하해요 · 기쁘다 구주 오셨네';
+  else { const w = Math.min(3, Math.floor((today - adv1) / (7 * 864e5))); line = `대림절 ${NUM[w]} 주간 · 오시는 주님을 기다려요`; }
+  const e = document.getElementById('eyebrow'); if (e) e.textContent = line;
 })();
 </script>
 </body>
