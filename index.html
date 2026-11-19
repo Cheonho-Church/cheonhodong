@@ -278,8 +278,6 @@ dialog.lb[open]{display:flex;flex-direction:column;align-items:center;justify-co
 .kcol .kt.sun{color:#e3d3b0}.kcol .kt.dawn{color:#b9cfe3}
 .kcol .vthumb{aspect-ratio:16/9;border-radius:12px}
 .kcol .cap{display:block;margin-top:8px;font-size:.88rem;line-height:1.4}
-.klink{display:inline-block;font-size:.95rem;line-height:1.5;color:inherit;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(244,239,228,.4)}
-.klink .arrow{margin-left:2px}
 .kcol .none{aspect-ratio:16/9;border-radius:12px;border:1px dashed rgba(244,239,228,.28)}
 .vthumb{position:relative;display:block;border-radius:16px;overflow:hidden;background:#162636;text-decoration:none}
 .vthumb img{display:block;width:100%;height:100%;object-fit:cover}
@@ -302,6 +300,8 @@ dialog.lb[open]{display:flex;flex-direction:column;align-items:center;justify-co
 @media (min-width:760px){.agrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .agrid .vthumb{aspect-ratio:9/16}
 .agrid.wide{grid-template-columns:1fr}
+.kbanner{aspect-ratio:16/9;border-radius:12px}
+.vsec .kbanner{max-width:420px}
 @media (min-width:760px){.agrid.wide{grid-template-columns:1fr 1fr}}
 .agrid.wide .vthumb{aspect-ratio:16/9}
 
@@ -739,6 +739,11 @@ function thumb(v) {
   if (v.url || CHANNEL) { const p = make('span', 'play'); p.innerHTML = PLAY; t.append(p); }
   return t;
 }
+function kidsBanner() {   // 어린이 채널 배너(표지 1장) → 채널로 연결
+  const a = make('a', 'vthumb kbanner'); a.href = KIDS_CHANNEL; a.target = '_blank'; a.rel = 'noopener';
+  a.setAttribute('aria-label', '아이와 3분 성경말씀 동화 · 이사야 이야기 (유튜브 채널)');
+  const img = make('img'); img.src = 'videos/kids-channel.jpg'; img.alt = '아이와 3분 성경말씀 동화 이사야 이야기'; img.loading = 'lazy'; a.append(img); return a;
+}
 function item(v) {
   const wrap = make('div', 'item');
   const tag = v.cat === 'kids' ? '이사야편' : (v.cat === 'sunday' ? '주일' : dow(v.date) + ' 새벽');
@@ -749,8 +754,7 @@ function item(v) {
 const HOME_SHORTS = 4, HOME_KIDS = 2, PAGE_MAX = 4;
 VIDEOS.filter(v => v.cat === 'sunday').slice(0, HOME_SHORTS).forEach(v => $('rowSun').append(thumb(v)));
 VIDEOS.filter(v => v.cat === 'dawn').slice(0, HOME_SHORTS).forEach(v => $('rowDawn').append(thumb(v)));
-{ const a = make('a', 'klink'); a.href = KIDS_CHANNEL; a.target = '_blank'; a.rel = 'noopener';
-  a.innerHTML = '이사야 편 보러 가기 <span class="arrow" aria-hidden="true">↗</span>'; $('rowKids').append(a); }
+$('rowKids').append(kidsBanner());
 if (CHANNEL) { ['chLink','vChLink'].forEach(id=>{ const a=$(id); a.href = CHANNEL; a.hidden = false; }); }
 
 function renderVideos(filter) {
@@ -765,9 +769,7 @@ function renderVideos(filter) {
     if (filter !== 'all' && filter !== c) continue;
     if (c === 'kids') {   // 동화: 어린이 채널로 안내
       const sec = make('section', 'vsec archive'); sec.append(make('h2', '', CATS[c]));
-      const a = make('a', 'klink'); a.href = KIDS_CHANNEL; a.target = '_blank'; a.rel = 'noopener';
-      a.innerHTML = '이사야 편 보러 가기 <span class="arrow" aria-hidden="true">↗</span>';
-      sec.append(a); $('videoList').append(sec); continue;
+      sec.append(kidsBanner()); $('videoList').append(sec); continue;
     }
     const list = VIDEOS.filter(v => v.cat === c).slice(0, PAGE_MAX);   // 쇼츠: 분류마다 최신 4개
     if (!list.length) continue;
