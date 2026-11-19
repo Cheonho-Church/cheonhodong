@@ -561,7 +561,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
         <a class="toplink" href="#media">← 뒤로가기</a>
       </div>
       <h1>영상</h1>
-      <p>화–금 새벽과 주일에 나눈 말씀을 영상으로 다시 만나요. 분류마다 최근 영상 4개를 모았고, 지난 영상은 유튜브 채널에서 모두 볼 수 있어요.</p>
+      <p>화–금 새벽과 주일에 나눈 말씀을 영상으로 다시 만나요. 말씀 영상은 분류마다 최근 4개, 성경 동화는 새벽편·주일편 최근 1편씩을 모았고, 지난 영상은 유튜브 채널에서 모두 볼 수 있어요.</p>
       <nav class="tabs" id="tabs" aria-label="영상 분류"></nav>
     </div>
   </div>
@@ -767,7 +767,7 @@ function renderVideos(filter) {
   for (const c in CATS) {
     if (filter !== 'all' && filter !== c) continue;
     const list = c === 'kids'
-      ? ['dawn', 'sunday'].flatMap(tr => VIDEOS.filter(v => v.cat === 'kids' && v.track === tr).slice(0, PAGE_MAX / 2))   // 동화: 새벽편 2 + 주일편 2
+      ? ['dawn', 'sunday'].flatMap(tr => VIDEOS.filter(v => v.cat === 'kids' && v.track === tr).slice(0, 1))   // 동화: 새벽편 1 + 주일편 1
       : VIDEOS.filter(v => v.cat === c).slice(0, PAGE_MAX);   // 쇼츠: 분류마다 최신 4개
     if (!list.length) continue;
     const sec = make('section', 'vsec archive'); sec.append(make('h2', '', CATS[c]));
