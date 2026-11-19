@@ -543,32 +543,11 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
         <div class="mrow"><div class="mlabel"><b>어린이</b><span>성경 동화</span></div><div class="kgrid" id="rowKids"></div></div>
       </div>
       <div class="m-links">
-        <a href="#videos" id="allLink">영상 모두 보기 <span class="arrow" aria-hidden="true">→</span></a>
         <a href="#" id="chLink" target="_blank" rel="noopener" hidden>유튜브 채널 <span class="arrow" aria-hidden="true">↗</span></a>
       </div>
     </div>
   </section>
 </main>
-</div>
-
-<!-- ===================== VIDEOS ===================== -->
-<div class="view" data-view="videos">
-  <div class="vhead">
-    <div class="wrap">
-      <div class="topbar">
-        <a class="brand" href="#home">
-          <img src="images/prok-logo.svg" width="30" height="30" alt="">
-          <span><b>천호동교회</b><small aria-label="한국기독교장로회">한국기독교장로회</small></span>
-        </a>
-        <a class="toplink" href="#media">← 뒤로가기</a>
-      </div>
-      <h1>영상</h1>
-      <p>화–금 새벽과 주일에 나눈 말씀을 영상으로 다시 만나요. 말씀 영상은 분류마다 최근 4개, 성경 동화는 어린이 채널에서 볼 수 있어요. 지난 영상은 유튜브 채널에서 모두 볼 수 있어요.</p>
-      <nav class="tabs" id="tabs" aria-label="영상 분류"></nav>
-    </div>
-  </div>
-  <div class="wrap" id="videoList"></div>
-  <div class="wrap vfoot"><a class="btn ghost" href="#media">← 뒤로가기</a><a class="btn ghost" id="vChLink" href="#" target="_blank" rel="noopener" hidden>천호동교회 유튜브 ↗</a></div>
 </div>
 
 <footer>
@@ -744,46 +723,17 @@ function kidsBanner() {   // 어린이 채널 배너(표지 1장) → 채널로 
   a.setAttribute('aria-label', '아이와 3분 성경말씀 동화 · 이사야 이야기 (유튜브 채널)');
   const img = make('img'); img.src = 'videos/kids-channel.jpg'; img.alt = '아이와 3분 성경말씀 동화 이사야 이야기'; img.loading = 'lazy'; a.append(img); return a;
 }
-function item(v) {
-  const wrap = make('div', 'item');
-  const tag = v.cat === 'kids' ? '이사야편' : (v.cat === 'sunday' ? '주일' : dow(v.date) + ' 새벽');
-  wrap.append(thumb(v), make('span', 'd', `${tag} · ${md(v.date)}`), make('span', 't', v.title));
-  return wrap;
-}
-// 홈 화면: 쇼츠는 줄마다 최신 4개, 어린이 동화는 최신 2개
-const HOME_SHORTS = 4, HOME_KIDS = 2, PAGE_MAX = 4;
+// 홈 화면: 쇼츠는 줄마다 최신 4개, 어린이는 채널 배너
+const HOME_SHORTS = 4;
 VIDEOS.filter(v => v.cat === 'sunday').slice(0, HOME_SHORTS).forEach(v => $('rowSun').append(thumb(v)));
 VIDEOS.filter(v => v.cat === 'dawn').slice(0, HOME_SHORTS).forEach(v => $('rowDawn').append(thumb(v)));
 $('rowKids').append(kidsBanner());
-if (CHANNEL) { ['chLink','vChLink'].forEach(id=>{ const a=$(id); a.href = CHANNEL; a.hidden = false; }); }
+if (CHANNEL) { ['chLink'].forEach(id=>{ const a=$(id); a.href = CHANNEL; a.hidden = false; }); }
 
-function renderVideos(filter) {
-  $('tabs').innerHTML = '';
-  [['all', '전체'], ...Object.entries(CATS)].forEach(([k, name]) => {
-    const a = make('a'); const SHORT = {kids:'성경 동화'};
-    a.append(make('span', 'l', name), make('span', 's', SHORT[k] || name)); a.href = k === 'all' ? '#videos' : '#videos-' + k;
-    if (k === filter) a.setAttribute('aria-current', 'true'); $('tabs').append(a);
-  });
-  $('videoList').innerHTML = '';
-  for (const c in CATS) {
-    if (filter !== 'all' && filter !== c) continue;
-    if (c === 'kids') {   // 동화: 어린이 채널로 안내
-      const sec = make('section', 'vsec archive'); sec.append(make('h2', '', CATS[c]));
-      sec.append(kidsBanner()); $('videoList').append(sec); continue;
-    }
-    const list = VIDEOS.filter(v => v.cat === c).slice(0, PAGE_MAX);   // 쇼츠: 분류마다 최신 4개
-    if (!list.length) continue;
-    const sec = make('section', 'vsec archive'); sec.append(make('h2', '', CATS[c]));
-    const g = make('div', c === 'kids' ? 'agrid wide' : 'agrid'); list.forEach(v => g.append(item(v)));
-    sec.append(g); $('videoList').append(sec);
-  }
-}
 function route() {
   const h = (location.hash || '#home').slice(1);
-  const vids = h === 'videos' || h.startsWith('videos-');
-  document.querySelectorAll('.view').forEach(v => v.classList.toggle('on', v.dataset.view === (vids ? 'videos' : 'home')));
-  if (vids) { const f = h.split('-')[1]; renderVideos(CATS[f] ? f : 'all'); window.scrollTo(0, 0); }
-  else { const t = $(h); if (t && h !== 'home') requestAnimationFrame(() => t.scrollIntoView()); else window.scrollTo(0, 0); }
+  document.querySelectorAll('.view').forEach(v => v.classList.add('on'));
+  const t = $(h); if (t && h !== 'home') requestAnimationFrame(() => t.scrollIntoView()); else window.scrollTo(0, 0);
 }
 window.addEventListener('hashchange', route); route();
 
