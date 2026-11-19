@@ -272,8 +272,8 @@ dialog.lb[open]{display:flex;flex-direction:column;align-items:center;justify-co
 .mlist .vthumb{aspect-ratio:9/16;border-radius:12px}
 .slot{aspect-ratio:9/16;border-radius:12px;border:1px dashed rgba(244,239,228,.28);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;color:var(--on-dark-muted);font-size:.85rem;font-variant-numeric:tabular-nums}
 .slot b{font-family:var(--display);font-weight:600;font-size:1.25rem;color:rgba(244,239,228,.55)}
-.kgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-@media (min-width:760px){.kgrid{grid-template-columns:repeat(2,minmax(0,240px));gap:20px}}
+.kgrid{display:grid;grid-template-columns:minmax(0,420px);gap:14px}
+.mlist > .kbanner{flex:0 0 100%;max-width:420px;aspect-ratio:16/9;border-radius:12px}
 .kcol .kt{display:block;font-size:.8rem;font-weight:600;margin-bottom:8px}
 .kcol .kt.sun{color:#e3d3b0}.kcol .kt.dawn{color:#b9cfe3}
 .kcol .vthumb{aspect-ratio:16/9;border-radius:12px}
@@ -296,8 +296,6 @@ dialog.lb[open]{display:flex;flex-direction:column;align-items:center;justify-co
 @media (min-width:760px){.agrid{grid-template-columns:repeat(4,minmax(0,1fr))}}
 .agrid .vthumb{aspect-ratio:9/16}
 .agrid.wide{grid-template-columns:1fr}
-.kbanner{aspect-ratio:16/9;border-radius:12px}
-.vsec .kbanner{max-width:420px}
 @media (min-width:760px){.agrid.wide{grid-template-columns:1fr 1fr}}
 .agrid.wide .vthumb{aspect-ratio:16/9}
 
@@ -718,20 +716,18 @@ function kidsBanner() {   // 어린이 채널 배너(표지 1장) → 채널로 
 }
 // 홈 화면: 주일·새벽·어린이 모두 카드 한 장 → 유튜브 재생목록(채널)으로 연결
 const SUNDAY_LIST = 'https://www.youtube.com/playlist?list=PLXuDDjm7EXZo', DAWN_LIST = 'https://www.youtube.com/playlist?list=PLderqM7aVwPk';   // 재생목록 주소를 받으면 여기만 바꾼다
-// 주일 카드: 절기별 표지(마지막 날짜까지). 미리보기는 주소 끝에 ?d=2026-12-06
+// 주일 카드: 절기별 배너(마지막 날짜까지). 이후는 기본 배너. 미리보기는 주소 끝에 ?d=2026-12-06
 const SUNDAY_SEASON = [['2026-11-22', 'sunday-creation'], ['2026-12-24', 'sunday-advent']];
-function listCard(href, src, label) {
-  const t = make('a', 'vthumb'); t.href = href; t.target = '_blank'; t.rel = 'noopener'; t.setAttribute('aria-label', label);
-  const img = make('img'); img.src = src; img.alt = ''; img.loading = 'lazy'; img.decoding = 'async'; t.append(img);
-  const p = make('span', 'play'); p.innerHTML = PLAY; t.append(p); return t;
+function listCard(href, src, label) {   // 가로 배너 한 장 → 유튜브 재생목록
+  const t = make('a', 'vthumb kbanner'); t.href = href; t.target = '_blank'; t.rel = 'noopener'; t.setAttribute('aria-label', label);
+  const img = make('img'); img.src = src; img.alt = label; img.loading = 'lazy'; img.decoding = 'async'; t.append(img); return t;
 }
 (function () {
   const q = new URLSearchParams(location.search).get('d'), n = new Date();
   const iso = q || `${n.getFullYear()}-${String(n.getMonth() + 1).padStart(2, '0')}-${String(n.getDate()).padStart(2, '0')}`;
-  const sea = SUNDAY_SEASON.find(([until]) => iso <= until), lastSun = VIDEOS.find(v => v.cat === 'sunday'), lastDawn = VIDEOS.find(v => v.cat === 'dawn');
-  const sun = sea ? `videos/${sea[1]}.jpg` : (lastSun && `videos/${lastSun.thumb}.jpg`);
-  if (sun) $('rowSun').append(listCard(SUNDAY_LIST, sun, '주일 말씀 영상 (유튜브)'));
-  if (lastDawn) $('rowDawn').append(listCard(DAWN_LIST, `videos/${lastDawn.thumb}.jpg`, '새벽 말씀 영상 (유튜브)'));
+  const sea = SUNDAY_SEASON.find(([until]) => iso <= until);
+  $('rowSun').append(listCard(SUNDAY_LIST, `videos/${sea ? sea[1] : 'sunday-default'}.jpg`, '주일 말씀 영상 · 유튜브 바로가기'));
+  $('rowDawn').append(listCard(DAWN_LIST, 'videos/dawn-banner.jpg', '새벽 말씀 영상 · 유튜브 바로가기'));
 })();
 $('rowKids').append(kidsBanner());
 
