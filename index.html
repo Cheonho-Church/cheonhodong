@@ -712,15 +712,16 @@ function thumb(v) {
 function kidsBanner() {   // 어린이 채널 배너(표지 1장) → 채널로 연결
   const a = make('a', 'vthumb kbanner'); a.href = KIDS_CHANNEL; a.target = '_blank'; a.rel = 'noopener';
   a.setAttribute('aria-label', '아이와 3분 성경말씀 동화 · 이사야 이야기 (유튜브 채널)');
-  const img = make('img'); img.src = 'videos/kids-channel.jpg'; img.alt = '아이와 3분 성경말씀 동화 이사야 이야기'; img.loading = 'lazy'; a.append(img); return a;
+  const img = make('img'); img.src = 'videos/kids-channel.jpg' + IMG_V; img.alt = '아이와 3분 성경말씀 동화 이사야 이야기'; img.loading = 'lazy'; a.append(img); return a;
 }
 // 홈 화면: 주일·새벽·어린이 모두 카드 한 장 → 유튜브 재생목록(채널)으로 연결
 const SUNDAY_LIST = 'https://www.youtube.com/playlist?list=PLXuDDjm7EXZo', DAWN_LIST = 'https://www.youtube.com/playlist?list=PLderqM7aVwPk';   // 재생목록 주소를 받으면 여기만 바꾼다
 // 주일 카드: 절기별 배너(마지막 날짜까지). 이후는 기본 배너. 미리보기는 주소 끝에 ?d=2026-12-06
 const SUNDAY_SEASON = [['2026-11-22', 'sunday-creation'], ['2026-12-24', 'sunday-advent']];
+const IMG_V = '?v=20261119';   // 배너 이미지를 바꿀 때 이 날짜도 바꾼다(휴대폰에 남은 옛 이미지 방지)
 function listCard(href, src, label) {   // 가로 배너 한 장 → 유튜브 재생목록
   const t = make('a', 'vthumb kbanner'); t.href = href; t.target = '_blank'; t.rel = 'noopener'; t.setAttribute('aria-label', label);
-  const img = make('img'); img.src = src; img.alt = label; img.loading = 'lazy'; img.decoding = 'async'; t.append(img); return t;
+  const img = make('img'); img.src = src + IMG_V; img.alt = label; img.loading = 'lazy'; img.decoding = 'async'; t.append(img); return t;
 }
 (function () {
   const q = new URLSearchParams(location.search).get('d'), n = new Date();
