@@ -278,6 +278,8 @@ dialog.lb[open]{display:flex;flex-direction:column;align-items:center;justify-co
 .kcol .kt.sun{color:#e3d3b0}.kcol .kt.dawn{color:#b9cfe3}
 .kcol .vthumb{aspect-ratio:16/9;border-radius:12px}
 .kcol .cap{display:block;margin-top:8px;font-size:.88rem;line-height:1.4}
+.klink{display:inline-block;font-size:.95rem;line-height:1.5;color:inherit;text-decoration:underline;text-underline-offset:4px;text-decoration-color:rgba(244,239,228,.4)}
+.klink .arrow{margin-left:2px}
 .kcol .none{aspect-ratio:16/9;border-radius:12px;border:1px dashed rgba(244,239,228,.28)}
 .vthumb{position:relative;display:block;border-radius:16px;overflow:hidden;background:#162636;text-decoration:none}
 .vthumb img{display:block;width:100%;height:100%;object-fit:cover}
@@ -561,7 +563,7 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
         <a class="toplink" href="#media">← 뒤로가기</a>
       </div>
       <h1>영상</h1>
-      <p>화–금 새벽과 주일에 나눈 말씀을 영상으로 다시 만나요. 말씀 영상은 분류마다 최근 4개, 성경 동화는 최근 2편을 모았고, 지난 영상은 유튜브 채널에서 모두 볼 수 있어요.</p>
+      <p>화–금 새벽과 주일에 나눈 말씀을 영상으로 다시 만나요. 말씀 영상은 분류마다 최근 4개, 성경 동화는 어린이 채널에서 볼 수 있어요. 지난 영상은 유튜브 채널에서 모두 볼 수 있어요.</p>
       <nav class="tabs" id="tabs" aria-label="영상 분류"></nav>
     </div>
   </div>
@@ -673,6 +675,7 @@ $('wkCount').textContent = WEEK.notices.length;
 /* ===== 말씀 영상 (유튜브 연결) =====
    새 영상은 맨 위에 한 줄. cat = shorts(말씀 영상) | kids(어린이 성경 동화)
    url = 유튜브 영상 주소, thumb = videos/ 폴더의 썸네일 이름 */
+const KIDS_CHANNEL = 'https://www.youtube.com/channel/UCNMx5oVoSEP9ROefm2jSvnw';   // 어린이 성경 동화 채널
 const CHANNEL = 'https://www.youtube.com/@%EC%B2%9C%ED%98%B8%EB%8F%99%EA%B5%90%ED%9A%8C-z1n';   // 유튜브 채널 주소
 /* cat: sunday(주일 말씀) | dawn(새벽 말씀) | kids(어린이 성경 동화, track: sunday|dawn)
    date: YYYY-MM-DD, url: 유튜브 영상 주소, thumb: videos/ 폴더 썸네일 이름. 새 영상은 아무 데나 한 줄 추가 (날짜로 정렬됨) */
@@ -746,12 +749,8 @@ function item(v) {
 const HOME_SHORTS = 4, HOME_KIDS = 2, PAGE_MAX = 4;
 VIDEOS.filter(v => v.cat === 'sunday').slice(0, HOME_SHORTS).forEach(v => $('rowSun').append(thumb(v)));
 VIDEOS.filter(v => v.cat === 'dawn').slice(0, HOME_SHORTS).forEach(v => $('rowDawn').append(thumb(v)));
-VIDEOS.filter(v => v.cat === 'kids').slice(0, HOME_KIDS).forEach(v => {
-  const col = make('div', 'kcol');
-  col.append(make('span', 'kt dawn', `이사야편 · ${md(v.date)}`));
-  col.append(thumb(v), make('span', 'cap', shortTitle(v.title)));
-  $('rowKids').append(col);
-});
+{ const a = make('a', 'klink'); a.href = KIDS_CHANNEL; a.target = '_blank'; a.rel = 'noopener';
+  a.innerHTML = '이사야 편 보러 가기 <span class="arrow" aria-hidden="true">↗</span>'; $('rowKids').append(a); }
 if (CHANNEL) { ['chLink','vChLink'].forEach(id=>{ const a=$(id); a.href = CHANNEL; a.hidden = false; }); }
 
 function renderVideos(filter) {
@@ -764,9 +763,13 @@ function renderVideos(filter) {
   $('videoList').innerHTML = '';
   for (const c in CATS) {
     if (filter !== 'all' && filter !== c) continue;
-    const list = c === 'kids'
-      ? VIDEOS.filter(v => v.cat === 'kids').slice(0, 2)   // 동화: 이사야편 최신 2
-      : VIDEOS.filter(v => v.cat === c).slice(0, PAGE_MAX);   // 쇼츠: 분류마다 최신 4개
+    if (c === 'kids') {   // 동화: 어린이 채널로 안내
+      const sec = make('section', 'vsec archive'); sec.append(make('h2', '', CATS[c]));
+      const a = make('a', 'klink'); a.href = KIDS_CHANNEL; a.target = '_blank'; a.rel = 'noopener';
+      a.innerHTML = '이사야 편 보러 가기 <span class="arrow" aria-hidden="true">↗</span>';
+      sec.append(a); $('videoList').append(sec); continue;
+    }
+    const list = VIDEOS.filter(v => v.cat === c).slice(0, PAGE_MAX);   // 쇼츠: 분류마다 최신 4개
     if (!list.length) continue;
     const sec = make('section', 'vsec archive'); sec.append(make('h2', '', CATS[c]));
     const g = make('div', c === 'kids' ? 'agrid wide' : 'agrid'); list.forEach(v => g.append(item(v)));
