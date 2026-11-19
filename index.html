@@ -717,7 +717,7 @@ function kidsBanner() {   // 어린이 채널 배너(표지 1장) → 채널로 
   const img = make('img'); img.src = 'videos/kids-channel.jpg'; img.alt = '아이와 3분 성경말씀 동화 이사야 이야기'; img.loading = 'lazy'; a.append(img); return a;
 }
 // 홈 화면: 주일·새벽·어린이 모두 카드 한 장 → 유튜브 재생목록(채널)으로 연결
-const SUNDAY_LIST = CHANNEL, DAWN_LIST = CHANNEL;   // 재생목록 주소를 받으면 여기만 바꾼다
+const SUNDAY_LIST = 'https://www.youtube.com/playlist?list=PLXuDDjm7EXZo', DAWN_LIST = 'https://www.youtube.com/playlist?list=PLderqM7aVwPk';   // 재생목록 주소를 받으면 여기만 바꾼다
 // 주일 카드: 절기별 표지(마지막 날짜까지). 미리보기는 주소 끝에 ?d=2026-12-06
 const SUNDAY_SEASON = [['2026-11-22', 'sunday-creation'], ['2026-12-24', 'sunday-advent']];
 function listCard(href, src, label) {
