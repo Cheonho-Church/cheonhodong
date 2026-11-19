@@ -286,10 +286,6 @@ dialog.lb[open]{display:flex;flex-direction:column;align-items:center;justify-co
 .item{text-decoration:none;color:inherit}
 .item .d{display:block;margin-top:12px;font-size:.8rem;color:#c9d8a8;font-variant-numeric:tabular-nums}
 .item .t{display:block;margin-top:2px;font-size:.93rem;font-weight:500;line-height:1.45}
-.m-links{display:flex;flex-wrap:wrap;gap:8px 28px;margin-top:36px;padding-top:20px;border-top:1px solid rgba(244,239,228,.16)}
-.m-links a{color:var(--on-dark);text-decoration:none;min-height:44px;display:inline-flex;align-items:center;gap:6px;font-size:.95rem}
-.m-links a:hover .arrow{transform:translateX(3px)}
-.m-links a[hidden]{display:none}
 .kbadge{position:absolute;left:10px;top:10px;font-size:.78rem;font-weight:600;padding:4px 10px;border-radius:999px}
 .kbadge.sun{background:#eadfcb;color:#4e5a33}
 .kbadge.dawn{background:#dbe5ee;color:#2f4a63}
@@ -542,9 +538,6 @@ footer{background:var(--dawn-1);color:var(--on-dark);padding:72px 0 48px}
         <div class="mrow"><div class="mlabel"><b>새벽</b><span>화–금 새벽 말씀</span></div><div class="mlist" id="rowDawn"></div></div>
         <div class="mrow"><div class="mlabel"><b>어린이</b><span>아이와 3분 <i style="font-style:normal;white-space:nowrap">성경말씀 동화</i></span></div><div class="kgrid" id="rowKids"></div></div>
       </div>
-      <div class="m-links">
-        <a href="#" id="chLink" target="_blank" rel="noopener" hidden>유튜브 채널 <span class="arrow" aria-hidden="true">↗</span></a>
-      </div>
     </div>
   </section>
 </main>
@@ -728,7 +721,6 @@ const HOME_SHORTS = 4;
 VIDEOS.filter(v => v.cat === 'sunday').slice(0, HOME_SHORTS).forEach(v => $('rowSun').append(thumb(v)));
 VIDEOS.filter(v => v.cat === 'dawn').slice(0, HOME_SHORTS).forEach(v => $('rowDawn').append(thumb(v)));
 $('rowKids').append(kidsBanner());
-if (CHANNEL) { ['chLink'].forEach(id=>{ const a=$(id); a.href = CHANNEL; a.hidden = false; }); }
 
 function route() {
   const h = (location.hash || '#home').slice(1);
