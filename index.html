@@ -819,11 +819,12 @@ addEventListener('resize',()=>{clearTimeout(window.__as);window.__as=setTimeout(
   const adv4 = new Date(xmas); adv4.setDate(25 - (xmas.getDay() || 7));      // 성탄절 직전 주일
   const adv1 = new Date(adv4); adv1.setDate(adv4.getDate() - 21);
   const end = new Date(y + 1, 0, 6, 23, 59);
-  if (today < adv1 || today > end) return;
+  const start = new Date(adv1); start.setDate(adv1.getDate() - 5);   // 2026.11.24 변경: 대림절 첫째 주일 5일 전(토요일 이전 화요일)부터 미리 켠다
+  if (today < start || today > end) return;
   document.documentElement.classList.add('advent');
   const NUM = ['첫째', '둘째', '셋째', '넷째'];
   if (today >= new Date(y, 11, 24)) return;   // 성탄 이후엔 맨 위 문구를 바꾸지 않는다
-  const w = Math.min(3, Math.floor((today - adv1) / (7 * 864e5)));
+  const w = Math.max(0, Math.min(3, Math.floor((today - adv1) / (7 * 864e5))));
   const e = document.getElementById('eyebrow'); if (e) e.textContent = `대림절 ${NUM[w]} 주간 · 오시는 주님을 기다려요`;
 })();
 </script>
