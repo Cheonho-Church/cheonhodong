@@ -822,10 +822,9 @@ addEventListener('resize',()=>{clearTimeout(window.__as);window.__as=setTimeout(
   if (today < adv1 || today > end) return;
   document.documentElement.classList.add('advent');
   const NUM = ['첫째', '둘째', '셋째', '넷째'];
-  let line;
-  if (today >= new Date(y, 11, 24)) line = '성탄을 축하해요 · 기쁘다 구주 오셨네';
-  else { const w = Math.min(3, Math.floor((today - adv1) / (7 * 864e5))); line = `대림절 ${NUM[w]} 주간 · 오시는 주님을 기다려요`; }
-  const e = document.getElementById('eyebrow'); if (e) e.textContent = line;
+  if (today >= new Date(y, 11, 24)) return;   // 성탄 이후엔 맨 위 문구를 바꾸지 않는다
+  const w = Math.min(3, Math.floor((today - adv1) / (7 * 864e5)));
+  const e = document.getElementById('eyebrow'); if (e) e.textContent = `대림절 ${NUM[w]} 주간 · 오시는 주님을 기다려요`;
 })();
 </script>
 </body>
